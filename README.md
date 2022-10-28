@@ -1,0 +1,2 @@
+# NaniTrader
+Automated Trader System
