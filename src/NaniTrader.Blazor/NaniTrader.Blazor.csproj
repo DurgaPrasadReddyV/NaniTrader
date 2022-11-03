@@ -32,5 +32,9 @@
     <ProjectReference Include="..\..\src\NaniTrader.HttpApi.Client\NaniTrader.HttpApi.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 
 </Project>

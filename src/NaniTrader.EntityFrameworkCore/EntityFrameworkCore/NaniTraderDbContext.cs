@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NaniTrader.Books;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -24,6 +26,8 @@ public class NaniTraderDbContext :
     ITenantManagementDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
+
+    public DbSet<Book> Books { get; set; }
 
     #region Entities from the modules
 
@@ -74,6 +78,14 @@ public class NaniTraderDbContext :
         builder.ConfigureTenantManagement();
 
         /* Configure your own tables/entities inside here */
+
+        builder.Entity<Book>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "Books",
+                NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+        });
 
         //builder.Entity<YourEntity>(b =>
         //{

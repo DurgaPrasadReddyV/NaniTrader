@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NaniTrader.Localization;
+using NaniTrader.Permissions;
 using Volo.Abp.Account.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.UI.Navigation;
@@ -31,21 +32,37 @@ public class NaniTraderMenuContributor : IMenuContributor
         }
     }
 
-    private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<NaniTraderResource>();
 
         context.Menu.Items.Insert(
             0,
             new ApplicationMenuItem(
-                NaniTraderMenus.Home,
+                "BookStore.Home",
                 l["Menu:Home"],
                 "/",
                 icon: "fas fa-home"
             )
         );
 
-        return Task.CompletedTask;
+        var bookStoreMenu = new ApplicationMenuItem(
+            "BooksStore",
+            l["Menu:BookStore"],
+            icon: "fa fa-book"
+        );
+
+        context.Menu.AddItem(bookStoreMenu);
+
+        //CHECK the PERMISSION
+        if (await context.IsGrantedAsync(NaniTraderPermissions.Books.Default))
+        {
+            bookStoreMenu.AddItem(new ApplicationMenuItem(
+                "BooksStore.Books",
+                l["Menu:Books"],
+                url: "/books"
+            ));
+        }
     }
 
     private Task ConfigureUserMenuAsync(MenuConfigurationContext context)
