@@ -16,6 +16,11 @@ public class NaniTraderPermissionDefinitionProvider : PermissionDefinitionProvid
         booksPermission.AddChild(NaniTraderPermissions.Books.Create, L("Permission:Books.Create"));
         booksPermission.AddChild(NaniTraderPermissions.Books.Edit, L("Permission:Books.Edit"));
         booksPermission.AddChild(NaniTraderPermissions.Books.Delete, L("Permission:Books.Delete"));
+
+        var authorsPermission = bookStoreGroup.AddPermission(NaniTraderPermissions.Authors.Default, L("Permission:Authors"));
+        authorsPermission.AddChild(NaniTraderPermissions.Authors.Create, L("Permission:Authors.Create"));
+        authorsPermission.AddChild(NaniTraderPermissions.Authors.Edit, L("Permission:Authors.Edit"));
+        authorsPermission.AddChild(NaniTraderPermissions.Authors.Delete, L("Permission:Authors.Delete"));
     }
 
     private static LocalizableString L(string name)

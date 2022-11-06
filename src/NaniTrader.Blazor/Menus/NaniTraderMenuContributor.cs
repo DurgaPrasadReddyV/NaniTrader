@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NaniTrader.Blazor.Pages;
 using NaniTrader.Localization;
 using NaniTrader.Permissions;
 using Volo.Abp.Account.Localization;
@@ -52,7 +53,14 @@ public class NaniTraderMenuContributor : IMenuContributor
             icon: "fa fa-book"
         );
 
-        context.Menu.AddItem(bookStoreMenu);
+        var tokensMenu = new ApplicationMenuItem(
+           "Tokens",
+           l["Menu:Tokens"],
+           "/tokens",
+           icon: "fa fa-book"
+       );
+
+        context.Menu.AddItem(tokensMenu);
 
         //CHECK the PERMISSION
         if (await context.IsGrantedAsync(NaniTraderPermissions.Books.Default))
@@ -61,6 +69,15 @@ public class NaniTraderMenuContributor : IMenuContributor
                 "BooksStore.Books",
                 l["Menu:Books"],
                 url: "/books"
+            ));
+        }
+
+        if (await context.IsGrantedAsync(NaniTraderPermissions.Authors.Default))
+        {
+            bookStoreMenu.AddItem(new ApplicationMenuItem(
+                "BooksStore.Authors",
+                l["Menu:Authors"],
+                url: "/authors"
             ));
         }
     }
