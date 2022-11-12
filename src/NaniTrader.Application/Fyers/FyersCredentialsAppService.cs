@@ -107,7 +107,7 @@ namespace NaniTrader.Fyers
 
             var response = await _fyersApiClient.GenerateTokenAsync(tokenPayload);
 
-            _fyersCredentialsManager.UpdateTokenAsync(fyersCredentials, response, DateTime.Now);
+            _fyersCredentialsManager.UpdateTokenAsync(fyersCredentials, response.access_token, DateTime.Now);
 
             await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
         }
