@@ -8,19 +8,11 @@ public class NaniTraderPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var bookStoreGroup = context.AddGroup(NaniTraderPermissions.GroupName, L("Permission:BookStore"));
+        var naniTraderGroup = context.AddGroup(NaniTraderPermissions.GroupName, L("Permissions:NaniTrader"));
         //Define your own permissions here. Example:
         //myGroup.AddPermission(NaniTraderPermissions.MyPermission1, L("Permission:MyPermission1"));
 
-        var booksPermission = bookStoreGroup.AddPermission(NaniTraderPermissions.Books.Default, L("Permission:Books"));
-        booksPermission.AddChild(NaniTraderPermissions.Books.Create, L("Permission:Books.Create"));
-        booksPermission.AddChild(NaniTraderPermissions.Books.Edit, L("Permission:Books.Edit"));
-        booksPermission.AddChild(NaniTraderPermissions.Books.Delete, L("Permission:Books.Delete"));
-
-        var authorsPermission = bookStoreGroup.AddPermission(NaniTraderPermissions.Authors.Default, L("Permission:Authors"));
-        authorsPermission.AddChild(NaniTraderPermissions.Authors.Create, L("Permission:Authors.Create"));
-        authorsPermission.AddChild(NaniTraderPermissions.Authors.Edit, L("Permission:Authors.Edit"));
-        authorsPermission.AddChild(NaniTraderPermissions.Authors.Delete, L("Permission:Authors.Delete"));
+        _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersCredentials.Default, L("Permissions:NaniTrader:FyersCredentials"));
     }
 
     private static LocalizableString L(string name)

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NaniTrader.Authors;
-using NaniTrader.Books;
+using NaniTrader.Fyers;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -28,9 +27,7 @@ public class NaniTraderDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
-    public DbSet<Book> Books { get; set; }
-
-    public DbSet<Author> Authors { get; set; }
+    public DbSet<FyersCredentials> FyersCredentials { get; set; }
 
     #region Entities from the modules
 
@@ -89,28 +86,13 @@ public class NaniTraderDbContext :
         //    //...
         //});
 
-        builder.Entity<Book>(b =>
+        builder.Entity<FyersCredentials>(b =>
         {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "Books",
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersCredentials",
                 NaniTraderConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
 
-            b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
-        });
-
-        builder.Entity<Author>(b =>
-        {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "Authors",
-                NaniTraderConsts.DbSchema);
-
-            b.ConfigureByConvention();
-
-            b.Property(x => x.Name)
-                .IsRequired()
-                .HasMaxLength(AuthorConsts.MaxNameLength);
-
-            b.HasIndex(x => x.Name);
+            b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
         });
     }
 }

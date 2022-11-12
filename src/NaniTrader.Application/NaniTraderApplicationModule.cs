@@ -1,4 +1,7 @@
-﻿using Volo.Abp.Account;
+﻿using NaniTrader.ApiClients;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;
@@ -26,6 +29,11 @@ public class NaniTraderApplicationModule : AbpModule
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<NaniTraderApplicationModule>();
+        });
+
+        context.Services.AddHttpClient<FyersApiClient>().ConfigureHttpClient((client) =>
+        {
+            client.BaseAddress = new Uri("https://api.fyers.in");
         });
     }
 }

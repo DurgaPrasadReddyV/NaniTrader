@@ -33,53 +33,21 @@ public class NaniTraderMenuContributor : IMenuContributor
         }
     }
 
-    private async Task ConfigureMainMenuAsync(MenuConfigurationContext context)
+    private Task ConfigureMainMenuAsync(MenuConfigurationContext context)
     {
         var l = context.GetLocalizer<NaniTraderResource>();
 
-        context.Menu.Items.Insert(
-            0,
-            new ApplicationMenuItem(
-                "BookStore.Home",
-                l["Menu:Home"],
-                "/",
-                icon: "fas fa-home"
-            )
-        );
+        var dashboardMenuItem = new ApplicationMenuItem("NaniTrader.Dashboard", l["Menu:Dashboard"],url: "/", icon: "fas fa-home");
+        context.Menu.AddItem(dashboardMenuItem);
 
-        var bookStoreMenu = new ApplicationMenuItem(
-            "BooksStore",
-            l["Menu:BookStore"],
-            icon: "fa fa-book"
-        );
+        var brokersMenu = new ApplicationMenuItem("NaniTrader.Brokers", l["Menu:Brokers"], icon: "fa fa-book");
+        var fyersMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers", l["Menu:Brokers:Fyers"], icon: "fa fa-book");
+        var fyersCredentialsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Credentials", l["Menu:Brokers:Fyers:Credentials"],url: "/brokers/fyers/credentials", icon: "fa fa-book");
+        fyersMenuItem.AddItem(fyersCredentialsMenuItem);
+        brokersMenu.AddItem(fyersMenuItem);
+        context.Menu.AddItem(brokersMenu);
 
-        var tokensMenu = new ApplicationMenuItem(
-           "Tokens",
-           l["Menu:Tokens"],
-           "/tokens",
-           icon: "fa fa-book"
-       );
-
-        context.Menu.AddItem(tokensMenu);
-
-        //CHECK the PERMISSION
-        if (await context.IsGrantedAsync(NaniTraderPermissions.Books.Default))
-        {
-            bookStoreMenu.AddItem(new ApplicationMenuItem(
-                "BooksStore.Books",
-                l["Menu:Books"],
-                url: "/books"
-            ));
-        }
-
-        if (await context.IsGrantedAsync(NaniTraderPermissions.Authors.Default))
-        {
-            bookStoreMenu.AddItem(new ApplicationMenuItem(
-                "BooksStore.Authors",
-                l["Menu:Authors"],
-                url: "/authors"
-            ));
-        }
+        return Task.CompletedTask;
     }
 
     private Task ConfigureUserMenuAsync(MenuConfigurationContext context)
@@ -94,7 +62,7 @@ public class NaniTraderMenuContributor : IMenuContributor
             $"{authServerUrl.EnsureEndsWith('/')}Account/Manage?returnUrl={_configuration["App:SelfUrl"]}",
             icon: "fa fa-cog",
             order: 1000,
-            null).RequireAuthenticated());
+            null));
 
         return Task.CompletedTask;
     }

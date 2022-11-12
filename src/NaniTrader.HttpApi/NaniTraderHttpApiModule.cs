@@ -33,8 +33,7 @@ public class NaniTraderHttpApiModule : AbpModule
         {
             options.Resources
                 .Get<NaniTraderResource>()
-                .AddBaseTypes(
-                    typeof(AbpUiResource)
+                .AddBaseTypes(typeof(AbpUiResource)
                 );
         });
     }
