@@ -3,6 +3,8 @@ using NaniTrader.ApiClients;
 using NaniTrader.Permissions;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,7 +109,7 @@ namespace NaniTrader.Fyers
 
             var response = await _fyersApiClient.GenerateTokenAsync(tokenPayload);
 
-            _fyersCredentialsManager.UpdateTokenAsync(fyersCredentials, response.access_token, DateTime.Now);
+            _fyersCredentialsManager.UpdateTokenAsync(fyersCredentials, response.access_token, GetTokenExpirationTime(response.access_token));
 
             await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
         }
@@ -115,6 +117,15 @@ namespace NaniTrader.Fyers
         public async Task DeleteAsync(Guid id)
         {
             await _fyersCredentialsRepository.DeleteAsync(id);
+        }
+
+        private DateTime GetTokenExpirationTime(string token)
+        {
+            var handler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = handler.ReadJwtToken(token);
+            var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
+            var ticks = long.Parse(tokenExp);
+            return DateTimeOffset.FromUnixTimeSeconds(ticks).LocalDateTime;
         }
     }
 }
