@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using NaniTrader.Blazor.Pages;
 using NaniTrader.Localization;
-using NaniTrader.Permissions;
 using Volo.Abp.Account.Localization;
-using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.UI.Navigation;
-using Volo.Abp.Users;
 
 namespace NaniTrader.Blazor.Menus;
 
@@ -44,6 +39,8 @@ public class NaniTraderMenuContributor : IMenuContributor
         var fyersMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers", l["Menu:Brokers:Fyers"], icon: "fa fa-book");
         var fyersCredentialsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Credentials", l["Menu:Brokers:Fyers:Credentials"],url: "/brokers/fyers/credentials", icon: "fa fa-book");
         fyersMenuItem.AddItem(fyersCredentialsMenuItem);
+        var fyersRawSymbolsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.RawSymbols", l["Menu:Brokers:Fyers:RawSymbols"], url: "/brokers/fyers/rawsymbols", icon: "fa fa-book");
+        fyersMenuItem.AddItem(fyersRawSymbolsMenuItem);
         brokersMenu.AddItem(fyersMenuItem);
         context.Menu.AddItem(brokersMenu);
 

@@ -28,6 +28,7 @@ public class NaniTraderDbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<FyersCredentials> FyersCredentials { get; set; }
+    public DbSet<FyersRawSymbol> FyersRawSymbols { get; set; }
 
     #region Entities from the modules
 
@@ -93,6 +94,13 @@ public class NaniTraderDbContext :
             b.ConfigureByConvention(); //auto configure for the base class props
 
             b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
+        });
+
+        builder.Entity<FyersRawSymbol>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersRawSymbols",
+                NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
         });
     }
 }

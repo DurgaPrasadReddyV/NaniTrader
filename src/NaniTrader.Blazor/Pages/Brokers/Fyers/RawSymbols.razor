@@ -1,0 +1,35 @@
+﻿@page "/brokers/fyers/rawsymbols"
+@using NaniTrader.Localization
+@inherits NaniTraderComponentBase
+@inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
+@inject IFyersRawSymbolAppService FyersRawSymbolAppService
+@inject NavigationManager NavigationManager
+
+<Card>
+    <CardHeader>
+        <Row>
+            <Column ColumnSize="ColumnSize.Is6">
+                <h2>@L["LoadNewSymbols"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is6">
+                <Paragraph Alignment="TextAlignment.Right">
+                    <Button Color="Color.Primary"
+                            Clicked="() => LoadNewSymbolsAsync()">
+                        @L["LoadNewSymbols"]
+                    </Button>
+                </Paragraph>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="FyersRawSymbolDto"
+                  Data="FyersRawSymbolList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

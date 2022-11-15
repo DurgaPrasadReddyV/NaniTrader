@@ -4,10 +4,8 @@ using System;
 using Volo.Abp.Application.Dtos;
 using NaniTrader.Fyers;
 using System.Threading.Tasks;
-using AutoMapper.Internal.Mappers;
 using Blazorise.DataGrid;
 using System.Linq;
-using static NaniTrader.Permissions.NaniTraderPermissions;
 
 namespace NaniTrader.Blazor.Pages.Brokers.Fyers
 {

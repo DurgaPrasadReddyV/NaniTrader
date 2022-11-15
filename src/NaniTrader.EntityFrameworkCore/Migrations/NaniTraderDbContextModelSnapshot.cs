@@ -94,6 +94,113 @@ namespace NaniTrader.Migrations
                     b.ToTable("AppFyersCredentials", (string)null);
                 });
 
+            modelBuilder.Entity("NaniTrader.Fyers.FyersRawSymbol", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Column1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column10")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column11")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column12")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column13")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column14")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column15")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column16")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column17")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column18")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column3")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column5")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column6")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column7")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column8")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Column9")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)")
+                        .HasColumnName("ConcurrencyStamp");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<Guid?>("DeleterId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("DeleterId");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("DeletionTime");
+
+                    b.Property<string>("Exchange")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExtraProperties")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("ExtraProperties");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("LastModificationTime");
+
+                    b.Property<Guid?>("LastModifierId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("LastModifierId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppFyersRawSymbols", (string)null);
+                });
+
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")

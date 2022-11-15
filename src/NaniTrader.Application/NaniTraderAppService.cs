@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using NaniTrader.Localization;
+﻿using NaniTrader.Localization;
 using Volo.Abp.Application.Services;
 
 namespace NaniTrader;

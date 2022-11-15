@@ -35,5 +35,10 @@ public class NaniTraderApplicationModule : AbpModule
         {
             client.BaseAddress = new Uri("https://api.fyers.in");
         });
+
+        context.Services.AddHttpClient<FyersPublicApiClient>().ConfigureHttpClient((client) =>
+        {
+            client.BaseAddress = new Uri("https://public.fyers.in/");
+        });
     }
 }
