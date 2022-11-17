@@ -7,6 +7,8 @@ using Volo.Abp.PermissionManagement;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.VirtualFileSystem;
+using Volo.Abp.Http.Client;
+using System;
 
 namespace NaniTrader;
 
@@ -22,6 +24,17 @@ namespace NaniTrader;
 public class NaniTraderHttpApiClientModule : AbpModule
 {
     public const string RemoteServiceName = "Default";
+
+    public override void PreConfigureServices(ServiceConfigurationContext context)
+    {
+        PreConfigure<AbpHttpClientBuilderOptions>(options =>
+        {
+            options.ProxyClientActions.Add((remoteServiceName, clientBuilder, client) =>
+            {
+                client.Timeout = TimeSpan.FromMinutes(60);
+            });
+        });
+    }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

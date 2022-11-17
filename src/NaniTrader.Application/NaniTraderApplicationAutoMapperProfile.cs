@@ -12,6 +12,6 @@ public class NaniTraderApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
 
         CreateMap<FyersCredentials, FyersCredentialsDto>();
-        CreateMap<FyersCredentials, CreateFyersCredentialsDto>();
+        CreateMap<FyersRawSymbol, FyersRawSymbolDto>();
     }
 }

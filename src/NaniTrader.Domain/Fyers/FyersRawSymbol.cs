@@ -5,6 +5,47 @@ namespace NaniTrader.Fyers
 {
     public class FyersRawSymbol : FullAuditedAggregateRoot<Guid>
     {
+        public FyersRawSymbol(Guid id, string exchange,
+            string column1,
+            string column2,
+            string column3,
+            string column4,
+            string column5,
+            string column6,
+            string column7,
+            string column8,
+            string column9,
+            string column10,
+            string column11,
+            string column12,
+            string column13,
+            string column14,
+            string column15,
+            string column16,
+            string column17,
+            string column18) : base(id)
+        {
+            Exchange = exchange;
+            Column1 = column1;
+            Column2 = column2;
+            Column3 = column3;
+            Column4 = column4;
+            Column5 = column5;
+            Column6 = column6;
+            Column7 = column7;
+            Column8 = column8;
+            Column9 = column9;
+            Column10 = column10;
+            Column11 = column11;
+            Column12 = column12;
+            Column13 = column13;
+            Column14 = column14;
+            Column15 = column15;
+            Column16 = column16;
+            Column17 = column17;
+            Column18 = column18;
+        }
+
         public string Exchange { get; private set; }
         public string Column1 { get; private set; }
         public string Column2 { get; private set; }

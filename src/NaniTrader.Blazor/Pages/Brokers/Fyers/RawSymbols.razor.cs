@@ -55,7 +55,7 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
 
         private async Task LoadNewSymbolsAsync()
         {
-            await FyersRawSymbolAppService.CreateAsync();
+            await FyersRawSymbolAppService.DownloadNewSymbolsAsync();
         }
     }
 }

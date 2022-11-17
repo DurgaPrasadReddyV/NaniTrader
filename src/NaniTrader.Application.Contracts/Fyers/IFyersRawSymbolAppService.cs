@@ -7,9 +7,10 @@ namespace NaniTrader.Fyers
 {
     public interface IFyersRawSymbolAppService : IApplicationService
     {
-        Task CreateAsync();
-        Task UpdateAsync();
-        Task DeleteAsync(Guid id);
+        Task CheckSymbolsAsync();
+        Task DownloadNewSymbolsAsync();
+        Task UpdateExistingSymbolsAsync();
+        Task DeleteExpiredSymbolsAsync();
         Task<FyersRawSymbolDto> GetAsync(Guid id);
         Task<PagedResultDto<FyersRawSymbolDto>> GetListAsync(GetFyersRawSymbolListDto input);
     }
