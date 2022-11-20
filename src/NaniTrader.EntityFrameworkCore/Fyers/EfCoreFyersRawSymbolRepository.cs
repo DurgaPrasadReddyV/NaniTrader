@@ -28,10 +28,7 @@ namespace NaniTrader.Fyers
         {
             var dbSet = await GetDbSetAsync();
             return await dbSet
-                .WhereIf(
-                    !filter.IsNullOrWhiteSpace(),
-                    fyersCredentials => fyersCredentials.Exchange.Contains(filter)
-                )
+                .WhereIf(!filter.IsNullOrWhiteSpace(), fyersCredentials => fyersCredentials.Exchange.Contains(filter))
                 .OrderBy(sorting)
                 .Skip(skipCount)
                 .Take(maxResultCount)

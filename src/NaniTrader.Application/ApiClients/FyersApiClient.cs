@@ -17,6 +17,5 @@ public class FyersApiClient
         var response = await _httpClient.PostAsJsonAsync($"/api/v2/validate-authcode", tokenPayload, new JsonSerializerOptions() { }).ConfigureAwait(false);
 
         return await response.Content.ReadFromJsonAsync<TokenResponse>().ConfigureAwait(false);
-
     }
 }

@@ -9,9 +9,12 @@ using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Volo.Abp.BackgroundJobs.Hangfire;
+using Hangfire;
+using Microsoft.Extensions.Configuration;
+using Hangfire.SqlServer;
 
 namespace NaniTrader;
-
 [DependsOn(
     typeof(NaniTraderDomainModule),
     typeof(AbpAccountApplicationModule),
@@ -20,12 +23,15 @@ namespace NaniTrader;
     typeof(AbpPermissionManagementApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpFeatureManagementApplicationModule),
-    typeof(AbpSettingManagementApplicationModule)
+    typeof(AbpSettingManagementApplicationModule),
+    typeof(AbpBackgroundJobsHangfireModule)
     )]
 public class NaniTraderApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        var configuration = context.Services.GetConfiguration();
+
         Configure<AbpAutoMapperOptions>(options =>
         {
             options.AddMaps<NaniTraderApplicationModule>();
@@ -39,6 +45,14 @@ public class NaniTraderApplicationModule : AbpModule
         context.Services.AddHttpClient<FyersPublicApiClient>().ConfigureHttpClient((client) =>
         {
             client.BaseAddress = new Uri("https://public.fyers.in/");
+        });
+
+        context.Services.AddHangfire(config =>
+        {
+            config.UseSqlServerStorage(configuration.GetConnectionString("Default"), new SqlServerStorageOptions()
+            {
+                CommandTimeout = TimeSpan.FromSeconds(600)
+            });
         });
     }
 }

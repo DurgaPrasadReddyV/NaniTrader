@@ -16,4 +16,9 @@ public static class NaniTraderPermissions
     {
         public const string Default = GroupName + ".FyersRawSymbols";
     }
+
+    public static class Hangfire
+    {
+        public const string Default = GroupName + ".Hangfire";
+    }
 }

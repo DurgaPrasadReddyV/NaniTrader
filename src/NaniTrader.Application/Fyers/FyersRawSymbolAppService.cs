@@ -2,14 +2,17 @@
 using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Authorization;
 using NaniTrader.ApiClients;
+using NaniTrader.BackgroundJobs.SymbolsUpdate;
 using NaniTrader.Permissions;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
 
 namespace NaniTrader.Fyers
@@ -18,14 +21,12 @@ namespace NaniTrader.Fyers
     public class FyersRawSymbolAppService : NaniTraderAppService, IFyersRawSymbolAppService
     {
         private readonly IFyersRawSymbolRepository _fyersRawSymbolRepository;
-        private readonly FyersPublicApiClient _fyersPublicApiClient;
+        private readonly IBackgroundJobManager _backgroundJobManager;
 
-        public FyersRawSymbolAppService(
-            IFyersRawSymbolRepository fyersRawSymbolRepository,
-            FyersPublicApiClient fyersPublicApiClient)
+        public FyersRawSymbolAppService(IFyersRawSymbolRepository fyersRawSymbolRepository, IBackgroundJobManager backgroundJobManager)
         {
             _fyersRawSymbolRepository = fyersRawSymbolRepository;
-            _fyersPublicApiClient = fyersPublicApiClient;
+            _backgroundJobManager = backgroundJobManager;
         }
 
         public async Task<FyersRawSymbolDto> GetAsync(Guid id)
@@ -41,21 +42,13 @@ namespace NaniTrader.Fyers
                 input.Sorting = nameof(FyersRawSymbol.Exchange);
             }
 
-            var fyersRawSymbols = await _fyersRawSymbolRepository.GetListAsync(
-                input.SkipCount,
-                input.MaxResultCount,
-                input.Sorting,
-                input.Filter
-            );
+            var fyersRawSymbols = await _fyersRawSymbolRepository.GetListAsync(input.SkipCount, input.MaxResultCount, input.Sorting, input.Filter);
 
             var totalCount = input.Filter == null
                 ? await _fyersRawSymbolRepository.CountAsync()
                 : await _fyersRawSymbolRepository.CountAsync(fyersCredentials => fyersCredentials.Exchange.Contains(input.Filter));
 
-            return new PagedResultDto<FyersRawSymbolDto>(
-                totalCount,
-                ObjectMapper.Map<List<FyersRawSymbol>, List<FyersRawSymbolDto>>(fyersRawSymbols)
-            );
+            return new PagedResultDto<FyersRawSymbolDto>(totalCount, ObjectMapper.Map<List<FyersRawSymbol>, List<FyersRawSymbolDto>>(fyersRawSymbols));
         }
 
         public async Task CheckSymbolsAsync()
@@ -65,42 +58,8 @@ namespace NaniTrader.Fyers
 
         public async Task DownloadNewSymbolsAsync()
         {
-            var stream = await _fyersPublicApiClient.DownloadSymbolsAsync("NSE_FO");
-            var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ",", HasHeaderRecord = false };
-
-            using (var reader = new StreamReader(stream))
-            using (var csv = new CsvReader(reader, csvConfig))
-            {
-                csv.Context.RegisterClassMap<FyersRawSymbolMap>();
-                var fyersRawSymbolDtos = csv.GetRecords<FyersRawSymbolDto>().ToList();
-                var fyersRawSymbols = new List<FyersRawSymbol>();
-                foreach (var fyersRawSymbolDto in fyersRawSymbolDtos)
-                {
-                    var fyersRawSymbol = new FyersRawSymbol(Guid.NewGuid(),
-                        "NSEFO",
-                        fyersRawSymbolDto.Column1,
-                        fyersRawSymbolDto.Column2,
-                        fyersRawSymbolDto.Column3,
-                        fyersRawSymbolDto.Column4,
-                        fyersRawSymbolDto.Column5,
-                        fyersRawSymbolDto.Column6,
-                        fyersRawSymbolDto.Column7,
-                        fyersRawSymbolDto.Column8,
-                        fyersRawSymbolDto.Column9,
-                        fyersRawSymbolDto.Column10,
-                        fyersRawSymbolDto.Column11,
-                        fyersRawSymbolDto.Column12,
-                        fyersRawSymbolDto.Column13,
-                        fyersRawSymbolDto.Column14,
-                        fyersRawSymbolDto.Column15,
-                        fyersRawSymbolDto.Column16,
-                        fyersRawSymbolDto.Column17,
-                        fyersRawSymbolDto.Column18);
-                    fyersRawSymbols.Add(fyersRawSymbol);
-
-                }
-                await _fyersRawSymbolRepository.InsertManyAsync(fyersRawSymbols);
-            }
+            await _backgroundJobManager.EnqueueAsync(new DownloadNewSymbolsArgs { Exchange = "NSE_FO" });
+            await _backgroundJobManager.EnqueueAsync(new DownloadNewSymbolsArgs { Exchange = "NSE_CM" });
         }
 
         public async Task UpdateExistingSymbolsAsync()
@@ -109,6 +68,21 @@ namespace NaniTrader.Fyers
         }
 
         public async Task DeleteExpiredSymbolsAsync()
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task GetUnderlyingSymbolsAsync()
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task GetStrikesAsync(string underlyingSymbol)
+        {
+            await Task.CompletedTask;
+        }
+
+        public async Task GetExpiryDatesAsync(string underlyingSymbol)
         {
             await Task.CompletedTask;
         }

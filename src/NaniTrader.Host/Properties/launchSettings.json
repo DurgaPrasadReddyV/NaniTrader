@@ -8,6 +8,14 @@
       "useSSL": true,
       "httpPort": 44379,
       "sslPort": 44380
+    },
+    "NaniTrader.Host": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:44380",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

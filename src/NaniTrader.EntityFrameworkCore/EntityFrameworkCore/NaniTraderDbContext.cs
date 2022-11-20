@@ -60,7 +60,7 @@ public class NaniTraderDbContext :
     public NaniTraderDbContext(DbContextOptions<NaniTraderDbContext> options)
         : base(options)
     {
-
+        Database.SetCommandTimeout(600);
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

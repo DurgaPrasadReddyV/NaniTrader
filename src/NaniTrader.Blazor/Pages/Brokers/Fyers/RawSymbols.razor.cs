@@ -18,6 +18,8 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private string CurrentSorting { get; set; }
         private int TotalCount { get; set; }
 
+        private bool IsTaskRunning = false;
+
         public RawSymbols()
         {
         }
@@ -56,6 +58,7 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task LoadNewSymbolsAsync()
         {
             await FyersRawSymbolAppService.DownloadNewSymbolsAsync();
+            IsTaskRunning = true;
         }
     }
 }

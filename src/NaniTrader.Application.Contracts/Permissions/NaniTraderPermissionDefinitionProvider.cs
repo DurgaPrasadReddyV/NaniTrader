@@ -14,6 +14,7 @@ public class NaniTraderPermissionDefinitionProvider : PermissionDefinitionProvid
 
         _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersCredentials.Default, L("Permissions:NaniTrader:FyersCredentials"));
         _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersRawSymbols.Default, L("Permissions:NaniTrader:FyersRawSymbols"));
+        _ = naniTraderGroup.AddPermission(NaniTraderPermissions.Hangfire.Default, L("Permissions:NaniTrader:Hangfire"));
     }
 
     private static LocalizableString L(string name)

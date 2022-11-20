@@ -5,7 +5,7 @@ namespace NaniTrader.Fyers
 {
     public class FyersRawSymbol : FullAuditedAggregateRoot<Guid>
     {
-        public FyersRawSymbol(Guid id, string exchange,
+        public FyersRawSymbol(string exchange,
             string column1,
             string column2,
             string column3,
@@ -23,7 +23,7 @@ namespace NaniTrader.Fyers
             string column15,
             string column16,
             string column17,
-            string column18) : base(id)
+            string column18)
         {
             Exchange = exchange;
             Column1 = column1;
@@ -46,24 +46,24 @@ namespace NaniTrader.Fyers
             Column18 = column18;
         }
 
-        public string Exchange { get; private set; }
-        public string Column1 { get; private set; }
-        public string Column2 { get; private set; }
-        public string Column3 { get; private set; }
-        public string Column4 { get; private set; }
-        public string Column5 { get; private set; }
-        public string Column6 { get; private set; }
-        public string Column7 { get; private set; }
-        public string Column8 { get; private set; }
-        public string Column9 { get; private set; }
-        public string Column10 { get; private set; }
-        public string Column11 { get; private set; }
-        public string Column12 { get; private set; }
-        public string Column13 { get; private set; }
-        public string Column14 { get; private set; }
-        public string Column15 { get; private set; }
-        public string Column16 { get; private set; }
-        public string Column17 { get; private set; }
-        public string Column18 { get; private set; }
+        public string Exchange { get; private set; } // Exchange
+        public string Column1 { get; private set; } // SymbolLongId
+        public string Column2 { get; private set; } // Symbol Description
+        public string Column3 { get; private set; } //
+        public string Column4 { get; private set; } // Lot Size
+        public string Column5 { get; private set; } // Minimum price
+        public string Column6 { get; private set; } //
+        public string Column7 { get; private set; } // Trading time window
+        public string Column8 { get; private set; } // Updated date
+        public string Column9 { get; private set; } //
+        public string Column10 { get; private set; } // Fyers Trade Symbol
+        public string Column11 { get; private set; } //
+        public string Column12 { get; private set; } //
+        public string Column13 { get; private set; } // SymbolShortId
+        public string Column14 { get; private set; } // Underlying Symbol
+        public string Column15 { get; private set; } // UnderlyingSymbolShortId
+        public string Column16 { get; private set; } // Strike
+        public string Column17 { get; private set; } // OptionRight (CE/PE/XX)
+        public string Column18 { get; private set; } // UnderlyingSymbolLongId
     }
 }

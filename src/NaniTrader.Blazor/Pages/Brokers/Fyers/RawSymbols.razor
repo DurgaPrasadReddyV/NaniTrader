@@ -14,6 +14,7 @@
             <Column ColumnSize="ColumnSize.Is6">
                 <Paragraph Alignment="TextAlignment.Right">
                     <Button Color="Color.Primary"
+                            Disabled="@IsTaskRunning"
                             Clicked="() => LoadNewSymbolsAsync()">
                         @L["LoadNewSymbols"]
                     </Button>
@@ -27,8 +28,67 @@
                   ReadData="OnDataGridReadAsync"
                   TotalItems="TotalCount"
                   ShowPager="true"
+                  Striped="true"
+                  Responsive="true"
                   PageSize="PageSize">
             <DataGridColumns>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Exchange)"
+                                Caption="@L["Exchange"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column1)"
+                                Caption="@L["Column1"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column2)"
+                                Caption="@L["Column2"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column3)"
+                                Caption="@L["Column3"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column4)"
+                                Caption="@L["Column4"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column5)"
+                                Caption="@L["Column5"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column6)"
+                                Caption="@L["Column6"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column7)"
+                                Caption="@L["Column7"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column8)"
+                                Caption="@L["Column8"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column9)"
+                                Caption="@L["Column9"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column10)"
+                                Caption="@L["Column10"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column11)"
+                                Caption="@L["Column11"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column12)"
+                                Caption="@L["Column12"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column13)"
+                                Caption="@L["Column13"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column14)"
+                                Caption="@L["Column14"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column15)"
+                                Caption="@L["Column15"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column16)"
+                                Caption="@L["Column16"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column17)"
+                                Caption="@L["Column17"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolDto"
+                                Field="@nameof(FyersRawSymbolDto.Column18)"
+                                Caption="@L["Column18"]"></DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>

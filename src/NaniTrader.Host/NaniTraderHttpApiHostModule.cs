@@ -26,6 +26,9 @@ using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.UI.Navigation.Urls;
+using Hangfire;
+using Volo.Abp.Hangfire;
+using NaniTrader.Permissions;
 
 namespace NaniTrader;
 
@@ -216,6 +219,12 @@ public class NaniTraderHttpApiHostModule : AbpModule
 
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
+
+        app.UseHangfireDashboard("/hangfire", new DashboardOptions
+        {
+            AsyncAuthorization = new[] { new AbpHangfireAuthorizationFilter(requiredPermissionName: NaniTraderPermissions.Hangfire.Default) }
+        });
+
         app.UseConfiguredEndpoints();
 
         if (app is WebApplication webApp)
