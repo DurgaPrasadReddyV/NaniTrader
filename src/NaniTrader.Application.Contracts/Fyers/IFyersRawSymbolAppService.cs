@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,5 +14,9 @@ namespace NaniTrader.Fyers
         Task DeleteExpiredSymbolsAsync();
         Task<FyersRawSymbolDto> GetAsync(Guid id);
         Task<PagedResultDto<FyersRawSymbolDto>> GetListAsync(GetFyersRawSymbolListDto input);
+        Task<List<string>> GetUnderlyingSymbolsAsync();
+        Task<List<string>> GetStrikesAsync(string underlyingSymbol);
+        Task<List<string>> GetExpiryDatesAsync(string underlyingSymbol);
+        Task<List<FyersRawSymbolStrikeDto>> GetOptionChainForExpiryAsync(string underlyingSymbol, string expiry);
     }
 }

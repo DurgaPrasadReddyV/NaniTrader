@@ -4,3 +4,79 @@
 @inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
 @inject IFyersRawSymbolAppService FyersRawSymbolAppService
 @inject NavigationManager NavigationManager
+
+<Card>
+    <CardHeader>
+        <Row>
+            <Column ColumnSize="ColumnSize.Is3">
+                <h2>@L["Option Chain"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is3">
+                <Paragraph Alignment="TextAlignment.Right">
+                    <Field>
+                        <FieldLabel>@L["Underlying"]</FieldLabel>
+                        <Select TValue="string" SelectedValue="@UnderlyingSelectedValue" SelectedValueChanged="@OnUnderlyingSelectedValueChangedAsync">
+                            @foreach (string underlyingSymbol in UnderlyingSymbols)
+                            {
+                                <SelectItem TValue="string" Value="@underlyingSymbol">
+                                    @underlyingSymbol
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Paragraph>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is3">
+                <Paragraph Alignment="TextAlignment.Right">
+                    <Field>
+                        <FieldLabel>@L["ExpiryDate"]</FieldLabel>
+                        <Select TValue="string" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
+                            @foreach (string selectedUnderlyingExpiryDate in SelectedUnderlyingExpiryDates)
+                            {
+                                <SelectItem TValue="string" Value="@selectedUnderlyingExpiryDate">
+                                    @selectedUnderlyingExpiryDate
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Paragraph>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is3">
+                <Paragraph Alignment="TextAlignment.Right">
+                    <Field>
+                        <FieldLabel>@L["Strike"]</FieldLabel>
+                        <Select TValue="string" SelectedValue="@StrikeSelectedValue" SelectedValueChanged="@OnStrikeSelectedValueChangedAsync">
+                            @foreach (string selectedUnderlyingStrike in SelectedUnderlyingStrikes)
+                            {
+                                <SelectItem TValue="string" Value="@selectedUnderlyingStrike">
+                                    @selectedUnderlyingStrike
+                                </SelectItem>
+                            }
+                        </Select>
+                    </Field>
+                </Paragraph>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="FyersRawSymbolStrikeDto"
+                  Data="FyersRawSymbolStrikeList"
+                  ReadData="OnDataGridReadAsync"
+                  TotalItems="TotalCount"
+                  ShowPager="true"
+                  PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
+                                Field="@nameof(FyersRawSymbolStrikeDto.PESymbol)"
+                                Caption="@L["PESymbol"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
+                                Field="@nameof(FyersRawSymbolStrikeDto.StrikePrice)"
+                                Caption="@L["StrikePrice"]">
+                </DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
+                                Field="@nameof(FyersRawSymbolStrikeDto.CESymbol)"
+                                Caption="@L["CESymbol"]"></DataGridColumn>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

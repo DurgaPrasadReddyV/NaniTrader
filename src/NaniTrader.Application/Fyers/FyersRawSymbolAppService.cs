@@ -72,19 +72,37 @@ namespace NaniTrader.Fyers
             await Task.CompletedTask;
         }
 
-        public async Task GetUnderlyingSymbolsAsync()
+        public async Task<List<string>> GetUnderlyingSymbolsAsync()
         {
-            await Task.CompletedTask;
+            return await _fyersRawSymbolRepository.GetUnderlyingSymbolsAsync();
         }
 
-        public async Task GetStrikesAsync(string underlyingSymbol)
+        public async Task<List<string>> GetExpiryDatesAsync(string underlyingSymbol)
         {
-            await Task.CompletedTask;
+            List<string> expiryDates = await _fyersRawSymbolRepository.GetExpiryDatesAsync(underlyingSymbol);
+            return expiryDates;
+
         }
 
-        public async Task GetExpiryDatesAsync(string underlyingSymbol)
+        public async Task<List<string>> GetStrikesAsync(string underlyingSymbol)
         {
-            await Task.CompletedTask;
+            List<string> strikes = await _fyersRawSymbolRepository.GetStrikesAsync(underlyingSymbol);
+            return strikes;
+        }
+
+        public async Task<List<FyersRawSymbolStrikeDto>> GetOptionChainForExpiryAsync(string underlyingSymbol, string expiry)
+        {
+            var strikes = new List<FyersRawSymbolStrikeDto>();
+            var CEStrikes = await _fyersRawSymbolRepository.GetCESymbolsForExpiryAsync(underlyingSymbol, expiry);
+            var PEStrikes = await _fyersRawSymbolRepository.GetCESymbolsForExpiryAsync(underlyingSymbol, expiry);
+
+            strikes = CEStrikes.Select( x => new FyersRawSymbolStrikeDto() {CESymbol =  x.Column10,StrikePrice = x.Column16}).ToList();
+            strikes.ForEach(x =>
+            {
+                x.PESymbol = PEStrikes.Where(y => y.Column16 == x.StrikePrice).First().Column10;
+            });
+
+            return strikes;
         }
     }
 }

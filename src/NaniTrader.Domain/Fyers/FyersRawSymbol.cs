@@ -55,7 +55,7 @@ namespace NaniTrader.Fyers
         public string Column6 { get; private set; } //
         public string Column7 { get; private set; } // Trading time window
         public string Column8 { get; private set; } // Updated date
-        public string Column9 { get; private set; } //
+        public string Column9 { get; private set; } // Expiry time in epoch
         public string Column10 { get; private set; } // Fyers Trade Symbol
         public string Column11 { get; private set; } //
         public string Column12 { get; private set; } //

@@ -13,5 +13,11 @@ namespace NaniTrader.Fyers
             string sorting,
             string filter = null
         );
+
+        Task<List<string>> GetUnderlyingSymbolsAsync();
+        Task<List<string>> GetStrikesAsync(string underlyingSymbol);
+        Task<List<string>> GetExpiryDatesAsync(string underlyingSymbol);
+        Task<List<FyersRawSymbol>> GetPESymbolsForExpiryAsync(string underlyingSymbol, string expiry);
+        Task<List<FyersRawSymbol>> GetCESymbolsForExpiryAsync(string underlyingSymbol, string expiry);
     }
 }
