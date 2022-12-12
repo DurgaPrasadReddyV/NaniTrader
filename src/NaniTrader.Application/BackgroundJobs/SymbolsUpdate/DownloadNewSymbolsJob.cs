@@ -1,17 +1,13 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
 using NaniTrader.Fyers;
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Emailing;
-using static NaniTrader.Permissions.NaniTraderPermissions;
 using NaniTrader.ApiClients;
 
 namespace NaniTrader.BackgroundJobs.SymbolsUpdate
@@ -64,7 +60,7 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
 
                 var symbolFromDatabase = await _fyersRawSymbolRepository.FindAsync(x => x.Column1 == fyersRawSymbol.Column1);
 
-                if (symbolFromDatabase == null)
+                if (symbolFromDatabase is null)
                     await _fyersRawSymbolRepository.InsertAsync(fyersRawSymbol, true);
             }
         }

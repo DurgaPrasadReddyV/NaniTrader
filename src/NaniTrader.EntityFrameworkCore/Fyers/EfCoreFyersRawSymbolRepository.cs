@@ -7,7 +7,6 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.SettingManagement;
 
 namespace NaniTrader.Fyers
 {
@@ -15,8 +14,7 @@ namespace NaniTrader.Fyers
         : EfCoreRepository<NaniTraderDbContext, FyersRawSymbol, Guid>,
             IFyersRawSymbolRepository
     {
-        public EfCoreFyersRawSymbolRepository(
-            IDbContextProvider<NaniTraderDbContext> dbContextProvider)
+        public EfCoreFyersRawSymbolRepository(IDbContextProvider<NaniTraderDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -51,6 +49,7 @@ namespace NaniTrader.Fyers
             var dbSet = await GetDbSetAsync();
             return await dbSet
                 .Where(x => x.Column14 == underlyingSymbol)
+                .Where(x => x.Column17 == "PE" || x.Column17 == "CE")
                 .OrderBy(x => x.Column16)
                 .GroupBy(x => x.Column16)
                 .Select(x => x.FirstOrDefault().Column16)
@@ -63,28 +62,18 @@ namespace NaniTrader.Fyers
             return await dbSet
                 .Where(x => x.Column14 == underlyingSymbol)
                 .OrderBy(x => x.Column9)
+                .Where(x => x.Column17 == "PE" || x.Column17 == "CE")
                 .GroupBy(x => x.Column9)
                 .Select(x => x.FirstOrDefault().Column9)
                 .ToListAsync();
         }
 
-        public async Task<List<FyersRawSymbol>> GetPESymbolsForExpiryAsync(string underlyingSymbol, string expiry)
+        public async Task<List<FyersRawSymbol>> GetOptionSymbolsAsync(string underlyingSymbol)
         {
             var dbSet = await GetDbSetAsync();
             return await dbSet
                 .Where(x => x.Column14 == underlyingSymbol)
-                .Where(x => x.Column9 == expiry)
-                .Where(x => x.Column17 == "PE")
-                .ToListAsync();
-        }
-
-        public async Task<List<FyersRawSymbol>> GetCESymbolsForExpiryAsync(string underlyingSymbol, string expiry)
-        {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
-                .Where(x => x.Column14 == underlyingSymbol)
-                .Where(x => x.Column9 == expiry)
-                .Where(x => x.Column17 == "CE")
+                .Where(x => x.Column17 == "PE" || x.Column17 == "CE")
                 .ToListAsync();
         }
     }

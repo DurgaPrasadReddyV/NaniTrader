@@ -18,6 +18,16 @@
                             Clicked="() => LoadNewSymbolsAsync()">
                         @L["LoadNewSymbols"]
                     </Button>
+                    <Button Color="Color.Primary"
+                            Disabled="@IsTaskRunning"
+                            Clicked="() => UpdateExistingSymbolsAsync()">
+                        @L["UpdateExistingSymbols"]
+                    </Button>
+                    <Button Color="Color.Primary"
+                            Disabled="@IsTaskRunning"
+                            Clicked="() => RemoveExpiredSymbolsAsync()">
+                        @L["RemoveExpiredSymbols"]
+                    </Button>
                 </Paragraph>
             </Column>
         </Row>

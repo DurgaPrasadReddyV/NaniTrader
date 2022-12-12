@@ -29,15 +29,24 @@
             <Column ColumnSize="ColumnSize.Is3">
                 <Paragraph Alignment="TextAlignment.Right">
                     <Field>
-                        <FieldLabel>@L["ExpiryDate"]</FieldLabel>
+                        <FieldLabel>@L["ExpiryDateRange"]</FieldLabel>
                         <Select TValue="string" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
-                            @foreach (string selectedUnderlyingExpiryDate in SelectedUnderlyingExpiryDates)
+                            @foreach (string selectedUnderlyingExpiryDate in UnderlyingSymbolExpiryDates)
                             {
                                 <SelectItem TValue="string" Value="@selectedUnderlyingExpiryDate">
                                     @selectedUnderlyingExpiryDate
                                 </SelectItem>
                             }
                         </Select>
+                        <FieldLabel>@L["From"]</FieldLabel>
+                        <Tooltip Text="Hello tooltip" Placement="TooltipPlacement.TopStart">
+                            <Slider TValue="decimal" Value="25m" Step="5" Max="100m" />
+                        </Tooltip>
+
+                        <FieldLabel>@L["To"]</FieldLabel>
+                        <Tooltip Text="Hello tooltip" Placement="TooltipPlacement.BottomEnd">
+                            <Slider TValue="decimal" Value="55m" Step="5" Max="100m" />
+                        </Tooltip>
                     </Field>
                 </Paragraph>
             </Column>
@@ -46,13 +55,22 @@
                     <Field>
                         <FieldLabel>@L["Strike"]</FieldLabel>
                         <Select TValue="string" SelectedValue="@StrikeSelectedValue" SelectedValueChanged="@OnStrikeSelectedValueChangedAsync">
-                            @foreach (string selectedUnderlyingStrike in SelectedUnderlyingStrikes)
+                            @foreach (string selectedUnderlyingStrike in UnderlyingSymbolStrikes)
                             {
                                 <SelectItem TValue="string" Value="@selectedUnderlyingStrike">
                                     @selectedUnderlyingStrike
                                 </SelectItem>
                             }
                         </Select>
+                        <FieldLabel>@L["From"]</FieldLabel>
+                        <Tooltip Text="Hello tooltip" Placement="TooltipPlacement.TopStart">
+                            <Slider TValue="decimal" Value="25m" Step="5" Max="100m" />
+                        </Tooltip>
+                        
+                        <FieldLabel>@L["To"]</FieldLabel>
+                        <Tooltip Text="Hello tooltip" Placement="TooltipPlacement.BottomEnd">
+                            <Slider TValue="decimal" Value="55m" Step="5" Max="100m" />
+                        </Tooltip>
                     </Field>
                 </Paragraph>
             </Column>
@@ -67,6 +85,9 @@
                   PageSize="PageSize">
             <DataGridColumns>
                 <DataGridColumn TItem="FyersRawSymbolStrikeDto"
+                                Field="@nameof(FyersRawSymbolStrikeDto.PEPrice)"
+                                Caption="@L["PEPrice"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
                                 Field="@nameof(FyersRawSymbolStrikeDto.PESymbol)"
                                 Caption="@L["PESymbol"]"></DataGridColumn>
                 <DataGridColumn TItem="FyersRawSymbolStrikeDto"
@@ -76,6 +97,9 @@
                 <DataGridColumn TItem="FyersRawSymbolStrikeDto"
                                 Field="@nameof(FyersRawSymbolStrikeDto.CESymbol)"
                                 Caption="@L["CESymbol"]"></DataGridColumn>
+                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
+                                Field="@nameof(FyersRawSymbolStrikeDto.CEPrice)"
+                                Caption="@L["CEPrice"]"></DataGridColumn>
             </DataGridColumns>
         </DataGrid>
     </CardBody>

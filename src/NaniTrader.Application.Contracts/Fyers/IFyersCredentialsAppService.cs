@@ -12,6 +12,7 @@ namespace NaniTrader.Fyers
         Task DeleteAsync(Guid id);
         Task GenerateTokenAsync(string fyersApp, string authCode);
         Task<FyersCredentialsDto> GetAsync(Guid id);
+        Task<FyersCredentialsDto> GetCurrentUserAsync();
         Task<PagedResultDto<FyersCredentialsDto>> GetListAsync(GetFyersCredentialsListDto input);
     }
 }

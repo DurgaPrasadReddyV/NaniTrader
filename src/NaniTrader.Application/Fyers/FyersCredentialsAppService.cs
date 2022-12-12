@@ -36,6 +36,12 @@ namespace NaniTrader.Fyers
             return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCredentials);
         }
 
+        public async Task<FyersCredentialsDto> GetCurrentUserAsync()
+        {
+            var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
+            return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCurrentUserCredentials);
+        }
+
         public async Task<PagedResultDto<FyersCredentialsDto>> GetListAsync(GetFyersCredentialsListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
@@ -63,6 +69,11 @@ namespace NaniTrader.Fyers
 
         public async Task<FyersCredentialsDto> CreateAsync(CreateFyersCredentialsDto input)
         {
+            var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
+            
+            if (fyersCurrentUserCredentials is not null)
+                throw new InvalidOperationException("Account already exists.");
+
             var fyersCredentials = await _fyersCredentialsManager.CreateAsync(
                 input.AppId,
                 input.SecretId,
@@ -77,9 +88,9 @@ namespace NaniTrader.Fyers
 
         public async Task UpdateAsync(Guid id, UpdateFyersCredentialsDto input)
         {
-            var author = await _fyersCredentialsRepository.GetAsync(id);
-            _fyersCredentialsManager.UpdateSecretIdAsync(author, input.SecretId);
-            await _fyersCredentialsRepository.UpdateAsync(author);
+            var fyersCredentials = await _fyersCredentialsRepository.GetAsync(id);
+            _fyersCredentialsManager.UpdateSecretIdAsync(fyersCredentials, input.SecretId);
+            await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
         }
 
         public async Task GenerateTokenAsync(string fyersApp, string authCode) //variable named fyersApp instead of appId to avoid id based endpoint

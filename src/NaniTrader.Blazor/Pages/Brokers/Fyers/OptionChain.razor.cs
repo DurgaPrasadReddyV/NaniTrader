@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using System.Collections.Generic;
-using System;
 using Volo.Abp.Application.Dtos;
 using NaniTrader.Fyers;
 using System.Threading.Tasks;
@@ -13,8 +12,8 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
     {
         private IReadOnlyList<FyersRawSymbolStrikeDto> FyersRawSymbolStrikeList { get; set; }
         private List<string> UnderlyingSymbols { get; set; } = new List<string>();
-        private List<string> SelectedUnderlyingExpiryDates { get; set; } = new List<string>();
-        private List<string> SelectedUnderlyingStrikes { get; set; } = new List<string>();
+        private List<string> UnderlyingSymbolExpiryDates { get; set; } = new List<string>();
+        private List<string> UnderlyingSymbolStrikes { get; set; } = new List<string>();
         private string UnderlyingSelectedValue { get; set; }
         private string ExpiryDateSelectedValue { get; set; }
         private string StrikeSelectedValue { get; set; }
@@ -42,14 +41,14 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
 
         private async Task GetUnderlyingSymbolStrikesAsync(string underlying)
         {
-            SelectedUnderlyingStrikes = await FyersRawSymbolAppService.GetStrikesAsync(underlying);
-            StrikeSelectedValue = SelectedUnderlyingStrikes[0];
+            UnderlyingSymbolStrikes = await FyersRawSymbolAppService.GetStrikesAsync(underlying);
+            StrikeSelectedValue = UnderlyingSymbolStrikes[0];
         }
 
         private async Task GetUnderlyingSymbolExpiryDatessAsync(string underlying)
         {
-            SelectedUnderlyingExpiryDates = await FyersRawSymbolAppService.GetExpiryDatesAsync(underlying);
-            ExpiryDateSelectedValue = SelectedUnderlyingExpiryDates[0];
+            UnderlyingSymbolExpiryDates = await FyersRawSymbolAppService.GetExpiryDatesAsync(underlying);
+            ExpiryDateSelectedValue = UnderlyingSymbolExpiryDates[0];
         }
 
         private async Task OnUnderlyingSelectedValueChangedAsync(string value)
@@ -68,14 +67,12 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task OnExpiryDateSelectedValueChangedAsync(string value)
         {
             ExpiryDateSelectedValue = value;
-            await GetFyersRawSymbolStrikeAsync(UnderlyingSelectedValue, ExpiryDateSelectedValue);
+            await GetFyersRawSymbolStrikeAsync(UnderlyingSelectedValue);
         }
 
-        private async Task GetFyersRawSymbolStrikeAsync(string underlyingSelectedValue, string expiryDateSelectedValue)
+        private async Task GetFyersRawSymbolStrikeAsync(string underlyingSelectedValue)
         {
-            var result = await FyersRawSymbolAppService.GetOptionChainForExpiryAsync(underlyingSelectedValue, expiryDateSelectedValue);
-            FyersRawSymbolStrikeList = result;
-            TotalCount = (int)result.Count;
+            var result = await FyersRawSymbolAppService.GetOptionChainAsync(underlyingSelectedValue);
         }
 
         private async Task OnDataGridReadAsync(DataGridReadDataEventArgs<FyersRawSymbolStrikeDto> e)
@@ -86,7 +83,7 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
                 .JoinAsString(",");
             CurrentPage = e.Page - 1;
 
-            await GetFyersRawSymbolStrikeAsync(UnderlyingSelectedValue, ExpiryDateSelectedValue);
+            await GetFyersRawSymbolStrikeAsync(UnderlyingSelectedValue);
 
             StateHasChanged();
         }

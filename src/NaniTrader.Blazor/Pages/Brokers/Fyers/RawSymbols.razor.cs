@@ -1,6 +1,5 @@
 ﻿using Blazorise;
 using System.Collections.Generic;
-using System;
 using Volo.Abp.Application.Dtos;
 using NaniTrader.Fyers;
 using System.Threading.Tasks;
@@ -58,6 +57,18 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task LoadNewSymbolsAsync()
         {
             await FyersRawSymbolAppService.DownloadNewSymbolsAsync();
+            IsTaskRunning = true;
+        }
+
+        private async Task UpdateExistingSymbolsAsync()
+        {
+            await FyersRawSymbolAppService.UpdateExistingSymbolsAsync();
+            IsTaskRunning = true;
+        }
+
+        private async Task RemoveExpiredSymbolsAsync()
+        {
+            await FyersRawSymbolAppService.DeleteExpiredSymbolsAsync();
             IsTaskRunning = true;
         }
     }

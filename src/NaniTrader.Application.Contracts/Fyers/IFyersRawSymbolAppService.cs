@@ -17,6 +17,6 @@ namespace NaniTrader.Fyers
         Task<List<string>> GetUnderlyingSymbolsAsync();
         Task<List<string>> GetStrikesAsync(string underlyingSymbol);
         Task<List<string>> GetExpiryDatesAsync(string underlyingSymbol);
-        Task<List<FyersRawSymbolStrikeDto>> GetOptionChainForExpiryAsync(string underlyingSymbol, string expiry);
+        Task<OptionChainDto> GetOptionChainAsync(string underlyingSymbol);
     }
 }
