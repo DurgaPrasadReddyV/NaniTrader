@@ -81,8 +81,8 @@ namespace NaniTrader.Migrations
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("TokenExpiration")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("TokenExpiration")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -94,63 +94,12 @@ namespace NaniTrader.Migrations
                     b.ToTable("AppFyersCredentials", (string)null);
                 });
 
-            modelBuilder.Entity("NaniTrader.Fyers.FyersRawSymbol", b =>
+            modelBuilder.Entity("NaniTrader.Fyers.FyersSymbol", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Column1")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column10")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Column11")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column12")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column13")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column14")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column15")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column16")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column17")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column18")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column2")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column3")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column4")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column5")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column6")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column7")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column8")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Column9")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -175,12 +124,21 @@ namespace NaniTrader.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("DeletionTime");
 
-                    b.Property<string>("Exchange")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Exchange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("ExpiryTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ExtraProperties")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("ExtraProperties");
+
+                    b.Property<string>("ISIN")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -196,9 +154,42 @@ namespace NaniTrader.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<int>("LotSize")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OptionRight")
+                        .HasColumnType("int");
+
+                    b.Property<long>("SymbolId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("SymbolLongId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SymbolName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SymbolType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeWindow")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UnderlyingId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UnderlyingLongId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UnderlyingName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("UpdatedTime")
+                        .HasColumnType("datetimeoffset");
+
                     b.HasKey("Id");
 
-                    b.ToTable("AppFyersRawSymbols", (string)null);
+                    b.ToTable("AppFyersSymbols", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
@@ -1567,82 +1558,6 @@ namespace NaniTrader.Migrations
                     b.ToTable("AbpSettings", (string)null);
                 });
 
-            modelBuilder.Entity("Volo.Abp.TenantManagement.Tenant", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)")
-                        .HasColumnName("ConcurrencyStamp");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("CreationTime");
-
-                    b.Property<Guid?>("CreatorId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("CreatorId");
-
-                    b.Property<Guid?>("DeleterId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("DeleterId");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("DeletionTime");
-
-                    b.Property<string>("ExtraProperties")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("ExtraProperties");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false)
-                        .HasColumnName("IsDeleted");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("LastModificationTime");
-
-                    b.Property<Guid?>("LastModifierId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("LastModifierId");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name");
-
-                    b.ToTable("AbpTenants", (string)null);
-                });
-
-            modelBuilder.Entity("Volo.Abp.TenantManagement.TenantConnectionString", b =>
-                {
-                    b.Property<Guid>("TenantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
-
-                    b.HasKey("TenantId", "Name");
-
-                    b.ToTable("AbpTenantConnectionStrings", (string)null);
-                });
-
             modelBuilder.Entity("NaniTrader.Fyers.FyersCredentials", b =>
                 {
                     b.HasOne("Volo.Abp.Identity.IdentityUser", null)
@@ -1650,6 +1565,95 @@ namespace NaniTrader.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("NaniTrader.Fyers.FyersSymbol", b =>
+                {
+                    b.OwnsOne("NaniTrader.Fyers.Currency", "PriceStep", b1 =>
+                        {
+                            b1.Property<Guid>("FyersSymbolId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(20, 2)
+                                .HasColumnType("decimal(20,2)");
+
+                            b1.Property<int>("BaseDecimalPlace")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("DecimalMark")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("DecimalPlace")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("GeneralName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<bool>("IsDigital")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("IsoCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Symbol")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ThousandMark")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("FyersSymbolId");
+
+                            b1.ToTable("AppFyersSymbols");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FyersSymbolId");
+                        });
+
+                    b.OwnsOne("NaniTrader.Fyers.Currency", "StrikePrice", b1 =>
+                        {
+                            b1.Property<Guid>("FyersSymbolId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<decimal>("Amount")
+                                .HasPrecision(20, 2)
+                                .HasColumnType("decimal(20,2)");
+
+                            b1.Property<int>("BaseDecimalPlace")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("DecimalMark")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("DecimalPlace")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("GeneralName")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<bool>("IsDigital")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("IsoCode")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Symbol")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ThousandMark")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("FyersSymbolId");
+
+                            b1.ToTable("AppFyersSymbols");
+
+                            b1.WithOwner()
+                                .HasForeignKey("FyersSymbolId");
+                        });
+
+                    b.Navigation("PriceStep");
+
+                    b.Navigation("StrikePrice");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLogAction", b =>
@@ -1785,15 +1789,6 @@ namespace NaniTrader.Migrations
                         .HasForeignKey("AuthorizationId");
                 });
 
-            modelBuilder.Entity("Volo.Abp.TenantManagement.TenantConnectionString", b =>
-                {
-                    b.HasOne("Volo.Abp.TenantManagement.Tenant", null)
-                        .WithMany("ConnectionStrings")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>
                 {
                     b.Navigation("Actions");
@@ -1827,11 +1822,6 @@ namespace NaniTrader.Migrations
             modelBuilder.Entity("Volo.Abp.Identity.OrganizationUnit", b =>
                 {
                     b.Navigation("Roles");
-                });
-
-            modelBuilder.Entity("Volo.Abp.TenantManagement.Tenant", b =>
-                {
-                    b.Navigation("ConnectionStrings");
                 });
 #pragma warning restore 612, 618
         }

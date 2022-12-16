@@ -2,9 +2,9 @@
 
 namespace NaniTrader.Fyers
 {
-    public sealed class FyersRawSymbolMap : ClassMap<FyersRawSymbolDto>
+    public sealed class FyersSymbolCsvMapper : ClassMap<FyersSymbolCsvMap>
     {
-        public FyersRawSymbolMap()
+        public FyersSymbolCsvMapper()
         {
             Map(f => f.Column1).Index(0);
             Map(f => f.Column2).Index(1);

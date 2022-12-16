@@ -1,0 +1,51 @@
+﻿@page "/brokers/fyers/symbols"
+@using NaniTrader.Localization
+@inherits NaniTraderComponentBase
+@inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
+@inject IFyersSymbolAppService FyersSymbolAppService
+@inject NavigationManager NavigationManager
+
+<Card>
+    <CardHeader>
+        <Row>
+            <Column ColumnSize="ColumnSize.Is6">
+                <h2>@L["Symbols"]</h2>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is6">
+                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => LoadNewSymbolsAsync()">
+                    @L["LoadNewSymbols"]
+                </Button>
+                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => UpdateExistingSymbolsAsync()">
+                    @L["UpdateExistingSymbols"]
+                </Button>
+                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => RemoveExpiredSymbolsAsync()">
+                    @L["RemoveExpiredSymbols"]
+                </Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="FyersSymbolDto" Data="FyersSymbolList" ReadData="OnDataGridReadAsync" TotalItems="TotalCount" Filterable=true ShowPager="true" Striped="true" Responsive="true" PageSize="PageSize">
+            <DataGridColumns>
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.Exchange)" Caption="@L["Exchange"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.SymbolId)" Caption="@L["SymbolId"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.SymbolLongId)" Caption="@L["SymbolLongId"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.SymbolName)" Caption="@L["SymbolName"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.Description)" Caption="@L["Description"]" Filterable=true />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.UnderlyingId)" Caption="@L["UnderlyingId"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.UnderlyingLongId)" Caption="@L["UnderlyingLongId"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.UnderlyingName)" Caption="@L["UnderlyingName"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.ISIN)" Caption="@L["ISIN"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.StrikePrice)" Caption="@L["StrikePrice"]" Filterable=false/>
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.ExpiryTime)" Caption="@L["ExpiryTime"]" Filterable=false/>
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.PriceStep)" Caption="@L["PriceStep"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.LotSize)" Caption="@L["LotSize"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.SymbolType)" Caption="@L["SymbolType"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.OptionRight)" Caption="@L["OptionRight"]" Filterable=false/>
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.TimeWindow)" Caption="@L["TimeWindow"]" Filterable=false/>
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.UpdatedTime)" Caption="@L["UpdatedTime"]" Filterable=false />
+                <DataGridColumn TItem="FyersSymbolDto" Field="@nameof(FyersSymbolDto.Column11)" Caption="@L["Column11"]" Filterable=false/>
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>

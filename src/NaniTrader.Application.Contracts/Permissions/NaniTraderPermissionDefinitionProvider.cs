@@ -13,7 +13,7 @@ public class NaniTraderPermissionDefinitionProvider : PermissionDefinitionProvid
         //myGroup.AddPermission(NaniTraderPermissions.MyPermission1, L("Permission:MyPermission1"));
 
         _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersCredentials.Default, L("Permissions:NaniTrader:FyersCredentials"));
-        _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersRawSymbols.Default, L("Permissions:NaniTrader:FyersRawSymbols"));
+        _ = naniTraderGroup.AddPermission(NaniTraderPermissions.FyersSymbols.Default, L("Permissions:NaniTrader:FyersSymbols"));
         _ = naniTraderGroup.AddPermission(NaniTraderPermissions.Hangfire.Default, L("Permissions:NaniTrader:Hangfire"));
     }
 

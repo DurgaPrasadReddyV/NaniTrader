@@ -12,32 +12,28 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
-using Volo.Abp.TenantManagement;
-using Volo.Abp.TenantManagement.EntityFrameworkCore;
 
 namespace NaniTrader.EntityFrameworkCore;
 
 [ReplaceDbContext(typeof(IIdentityDbContext))]
-[ReplaceDbContext(typeof(ITenantManagementDbContext))]
 [ConnectionStringName("Default")]
 public class NaniTraderDbContext :
     AbpDbContext<NaniTraderDbContext>,
-    IIdentityDbContext,
-    ITenantManagementDbContext
+    IIdentityDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<FyersCredentials> FyersCredentials { get; set; }
-    public DbSet<FyersRawSymbol> FyersRawSymbols { get; set; }
+    public DbSet<FyersSymbol> FyersSymbols { get; set; }
 
     #region Entities from the modules
 
-    /* Notice: We only implemented IIdentityDbContext and ITenantManagementDbContext
-     * and replaced them for this DbContext. This allows you to perform JOIN
+    /* Notice: We only implemented IIdentityDbContext
+     * and replaced it for this DbContext. This allows you to perform JOIN
      * queries for the entities of these modules over the repositories easily. You
      * typically don't need that for other modules. But, if you need, you can
      * implement the DbContext interface of the needed module and use ReplaceDbContext
-     * attribute just like IIdentityDbContext and ITenantManagementDbContext.
+     * attribute just like IIdentityDbContext.
      *
      * More info: Replacing a DbContext of a module ensures that the related module
      * uses this DbContext on runtime. Otherwise, it will use its own DbContext class.
@@ -50,10 +46,6 @@ public class NaniTraderDbContext :
     public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
     public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
     public DbSet<IdentityLinkUser> LinkUsers { get; set; }
-
-    // Tenant Management
-    public DbSet<Tenant> Tenants { get; set; }
-    public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     #endregion
 
@@ -76,7 +68,6 @@ public class NaniTraderDbContext :
         builder.ConfigureIdentity();
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
-        builder.ConfigureTenantManagement();
 
         /* Configure your own tables/entities inside here */
 
@@ -89,18 +80,19 @@ public class NaniTraderDbContext :
 
         builder.Entity<FyersCredentials>(b =>
         {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersCredentials",
-                NaniTraderConsts.DbSchema);
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersCredentials",NaniTraderConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
 
             b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
         });
 
-        builder.Entity<FyersRawSymbol>(b =>
+        builder.Entity<FyersSymbol>(b =>
         {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersRawSymbols",
-                NaniTraderConsts.DbSchema);
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersSymbols",NaniTraderConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+            b.OwnsOne(x => x.StrikePrice).Property(x => x.Amount).HasPrecision(20, 2);
         });
     }
 }

@@ -16,7 +16,7 @@ namespace NaniTrader.Fyers
         /// The date on which the Option expires. The Option becomes invalid after this date and cannot be exercised.
         /// </summary>
         /// <value>The date on which the Option expires. The Option becomes invalid after this date and cannot be exercised.</value>
-        public string Expiration { get; set; }
+        public DateTimeOffset Expiration { get; set; }
 
         /// <summary>
         /// The strike price is the fixed price at which a derivative can be exercised, and refers to the price of the derivative’s underlying asset.  In a call option, the strike price is the price at which the option holder can purchase the underlying security.  For a put option, the strike price is the price at which the option holder can sell the underlying security.

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NaniTrader.Migrations
 {
-    public partial class Create_FyersCredentials_Entity : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -218,27 +218,6 @@ namespace NaniTrader.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpTenants",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
-                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AbpTenants", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AbpUsers",
                 columns: table => new
                 {
@@ -274,6 +253,60 @@ namespace NaniTrader.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AbpUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AppFyersSymbols",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SymbolId = table.Column<long>(type: "bigint", nullable: false),
+                    SymbolLongId = table.Column<long>(type: "bigint", nullable: false),
+                    SymbolName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UnderlyingId = table.Column<long>(type: "bigint", nullable: false),
+                    UnderlyingLongId = table.Column<long>(type: "bigint", nullable: false),
+                    UnderlyingName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Exchange = table.Column<int>(type: "int", nullable: false),
+                    SymbolType = table.Column<int>(type: "int", nullable: false),
+                    LotSize = table.Column<int>(type: "int", nullable: false),
+                    PriceStep_Amount = table.Column<decimal>(type: "decimal(20,2)", precision: 20, scale: 2, nullable: true),
+                    PriceStep_IsoCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceStep_IsDigital = table.Column<bool>(type: "bit", nullable: true),
+                    PriceStep_GeneralName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceStep_Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceStep_DecimalPlace = table.Column<int>(type: "int", nullable: true),
+                    PriceStep_BaseDecimalPlace = table.Column<int>(type: "int", nullable: true),
+                    PriceStep_DecimalMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceStep_ThousandMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ISIN = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TimeWindow = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ExpiryTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    StrikePrice_Amount = table.Column<decimal>(type: "decimal(20,2)", precision: 20, scale: 2, nullable: true),
+                    StrikePrice_IsoCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StrikePrice_IsDigital = table.Column<bool>(type: "bit", nullable: true),
+                    StrikePrice_GeneralName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StrikePrice_Symbol = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StrikePrice_DecimalPlace = table.Column<int>(type: "int", nullable: true),
+                    StrikePrice_BaseDecimalPlace = table.Column<int>(type: "int", nullable: true),
+                    StrikePrice_DecimalMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StrikePrice_ThousandMark = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OptionRight = table.Column<int>(type: "int", nullable: false),
+                    Column11 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
+                    CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    LastModificationTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    DeleterId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletionTime = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AppFyersSymbols", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -435,25 +468,6 @@ namespace NaniTrader.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AbpTenantConnectionStrings",
-                columns: table => new
-                {
-                    TenantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AbpTenantConnectionStrings", x => new { x.TenantId, x.Name });
-                    table.ForeignKey(
-                        name: "FK_AbpTenantConnectionStrings_AbpTenants_TenantId",
-                        column: x => x.TenantId,
-                        principalTable: "AbpTenants",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AbpUserClaims",
                 columns: table => new
                 {
@@ -577,7 +591,7 @@ namespace NaniTrader.Migrations
                     SecretId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RedirectUri = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TokenExpiration = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TokenExpiration = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExtraProperties = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: true),
@@ -810,11 +824,6 @@ namespace NaniTrader.Migrations
                 filter: "[ProviderName] IS NOT NULL AND [ProviderKey] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AbpTenants_Name",
-                table: "AbpTenants",
-                column: "Name");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AbpUserClaims_UserId",
                 table: "AbpUserClaims",
                 column: "UserId");
@@ -926,9 +935,6 @@ namespace NaniTrader.Migrations
                 name: "AbpSettings");
 
             migrationBuilder.DropTable(
-                name: "AbpTenantConnectionStrings");
-
-            migrationBuilder.DropTable(
                 name: "AbpUserClaims");
 
             migrationBuilder.DropTable(
@@ -947,6 +953,9 @@ namespace NaniTrader.Migrations
                 name: "AppFyersCredentials");
 
             migrationBuilder.DropTable(
+                name: "AppFyersSymbols");
+
+            migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
 
             migrationBuilder.DropTable(
@@ -954,9 +963,6 @@ namespace NaniTrader.Migrations
 
             migrationBuilder.DropTable(
                 name: "AbpEntityChanges");
-
-            migrationBuilder.DropTable(
-                name: "AbpTenants");
 
             migrationBuilder.DropTable(
                 name: "AbpOrganizationUnits");

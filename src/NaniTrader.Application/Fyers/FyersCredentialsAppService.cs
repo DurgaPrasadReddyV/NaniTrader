@@ -129,13 +129,13 @@ namespace NaniTrader.Fyers
             await _fyersCredentialsRepository.DeleteAsync(id);
         }
 
-        private DateTime GetTokenExpirationTime(string token)
+        private DateTimeOffset GetTokenExpirationTime(string token)
         {
             var handler = new JwtSecurityTokenHandler();
             var jwtSecurityToken = handler.ReadJwtToken(token);
             var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
             var ticks = long.Parse(tokenExp);
-            return DateTimeOffset.FromUnixTimeSeconds(ticks).LocalDateTime;
+            return DateTimeOffset.FromUnixTimeSeconds(ticks);
         }
     }
 }

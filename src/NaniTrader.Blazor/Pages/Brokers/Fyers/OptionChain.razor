@@ -2,7 +2,7 @@
 @using NaniTrader.Localization
 @inherits NaniTraderComponentBase
 @inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
-@inject IFyersRawSymbolAppService FyersRawSymbolAppService
+@inject IFyersSymbolAppService FyersSymbolAppService
 @inject NavigationManager NavigationManager
 
 <Card>
@@ -30,10 +30,10 @@
                 <Paragraph Alignment="TextAlignment.Right">
                     <Field>
                         <FieldLabel>@L["ExpiryDateRange"]</FieldLabel>
-                        <Select TValue="string" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
-                            @foreach (string selectedUnderlyingExpiryDate in UnderlyingSymbolExpiryDates)
+                        <Select TValue="DateTimeOffset" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
+                            @foreach (var selectedUnderlyingExpiryDate in UnderlyingSymbolExpiryDates)
                             {
-                                <SelectItem TValue="string" Value="@selectedUnderlyingExpiryDate">
+                                <SelectItem TValue="DateTimeOffset" Value="@selectedUnderlyingExpiryDate">
                                     @selectedUnderlyingExpiryDate
                                 </SelectItem>
                             }
@@ -54,10 +54,10 @@
                 <Paragraph Alignment="TextAlignment.Right">
                     <Field>
                         <FieldLabel>@L["Strike"]</FieldLabel>
-                        <Select TValue="string" SelectedValue="@StrikeSelectedValue" SelectedValueChanged="@OnStrikeSelectedValueChangedAsync">
-                            @foreach (string selectedUnderlyingStrike in UnderlyingSymbolStrikes)
+                        <Select TValue="decimal" SelectedValue="@StrikeSelectedValue" SelectedValueChanged="@OnStrikeSelectedValueChangedAsync">
+                            @foreach (var selectedUnderlyingStrike in UnderlyingSymbolStrikes)
                             {
-                                <SelectItem TValue="string" Value="@selectedUnderlyingStrike">
+                                <SelectItem TValue="decimal" Value="@selectedUnderlyingStrike">
                                     @selectedUnderlyingStrike
                                 </SelectItem>
                             }
@@ -77,28 +77,28 @@
         </Row>
     </CardHeader>
     <CardBody>
-        <DataGrid TItem="FyersRawSymbolStrikeDto"
-                  Data="FyersRawSymbolStrikeList"
+        <DataGrid TItem="FyersSymbolStrikeDto"
+                  Data="FyersSymbolStrikeList"
                   ReadData="OnDataGridReadAsync"
                   TotalItems="TotalCount"
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
-                                Field="@nameof(FyersRawSymbolStrikeDto.PEPrice)"
+                <DataGridColumn TItem="FyersSymbolStrikeDto"
+                                Field="@nameof(FyersSymbolStrikeDto.PEPrice)"
                                 Caption="@L["PEPrice"]"></DataGridColumn>
-                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
-                                Field="@nameof(FyersRawSymbolStrikeDto.PESymbol)"
+                <DataGridColumn TItem="FyersSymbolStrikeDto"
+                                Field="@nameof(FyersSymbolStrikeDto.PESymbol)"
                                 Caption="@L["PESymbol"]"></DataGridColumn>
-                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
-                                Field="@nameof(FyersRawSymbolStrikeDto.StrikePrice)"
+                <DataGridColumn TItem="FyersSymbolStrikeDto"
+                                Field="@nameof(FyersSymbolStrikeDto.StrikePrice)"
                                 Caption="@L["StrikePrice"]">
                 </DataGridColumn>
-                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
-                                Field="@nameof(FyersRawSymbolStrikeDto.CESymbol)"
+                <DataGridColumn TItem="FyersSymbolStrikeDto"
+                                Field="@nameof(FyersSymbolStrikeDto.CESymbol)"
                                 Caption="@L["CESymbol"]"></DataGridColumn>
-                <DataGridColumn TItem="FyersRawSymbolStrikeDto"
-                                Field="@nameof(FyersRawSymbolStrikeDto.CEPrice)"
+                <DataGridColumn TItem="FyersSymbolStrikeDto"
+                                Field="@nameof(FyersSymbolStrikeDto.CEPrice)"
                                 Caption="@L["CEPrice"]"></DataGridColumn>
             </DataGridColumns>
         </DataGrid>

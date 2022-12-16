@@ -2,7 +2,7 @@
 
 namespace NaniTrader.Fyers
 {
-    public class GetFyersRawSymbolListDto : PagedAndSortedResultRequestDto
+    public class GetFyersSymbolListDto : PagedAndSortedResultRequestDto
     {
         public string Filter { get; set; }
     }

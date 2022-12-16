@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace NaniTrader.Fyers
 {
-    public class FyersRawSymbolStrikeDto : EntityDto<Guid>
+    public class FyersSymbolStrikeDto : EntityDto<Guid>
     {
         public string StrikePrice { get; set; }
         public string CESymbol { get; set; }

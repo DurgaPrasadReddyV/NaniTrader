@@ -10,7 +10,7 @@ namespace NaniTrader.Fyers
         public string SecretId { get; internal set; }
         public string Token { get; internal set; }
         public string RedirectUri { get; private set; }
-        public DateTime TokenExpiration { get; internal set; }
+        public DateTimeOffset TokenExpiration { get; internal set; }
         public Guid UserId { get; private set; }
 
         private FyersCredentials()

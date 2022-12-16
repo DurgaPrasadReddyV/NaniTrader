@@ -14,46 +14,46 @@ using Volo.Abp.Domain.Repositories;
 
 namespace NaniTrader.Fyers
 {
-    [Authorize(NaniTraderPermissions.FyersRawSymbols.Default)]
-    public class FyersRawSymbolAppService : NaniTraderAppService, IFyersRawSymbolAppService
+    [Authorize(NaniTraderPermissions.FyersSymbols.Default)]
+    public class FyersSymbolAppService : NaniTraderAppService, IFyersSymbolAppService
     {
-        private readonly IFyersRawSymbolRepository _fyersRawSymbolRepository;
+        private readonly IFyersSymbolRepository _fyersSymbolRepository;
         private readonly IFyersCredentialsRepository _fyersCredentialsRepository;
         private readonly IBackgroundJobManager _backgroundJobManager;
         private readonly FyersApiClient _fyersApiClient;
 
-        public FyersRawSymbolAppService(
-            IFyersRawSymbolRepository fyersRawSymbolRepository,
+        public FyersSymbolAppService(
+            IFyersSymbolRepository fyersSymbolRepository,
             IFyersCredentialsRepository fyersCredentialsRepository,
             IBackgroundJobManager backgroundJobManager,
             FyersApiClient fyersApiClient)
         {
-            _fyersRawSymbolRepository = fyersRawSymbolRepository;
+            _fyersSymbolRepository = fyersSymbolRepository;
             _fyersCredentialsRepository = fyersCredentialsRepository;
             _backgroundJobManager = backgroundJobManager;
             _fyersApiClient = fyersApiClient;
         }
 
-        public async Task<FyersRawSymbolDto> GetAsync(Guid id)
+        public async Task<FyersSymbolDto> GetAsync(Guid id)
         {
-            var fyersRawSymbol = await _fyersRawSymbolRepository.GetAsync(id);
-            return ObjectMapper.Map<FyersRawSymbol, FyersRawSymbolDto>(fyersRawSymbol);
+            var fyersSymbol = await _fyersSymbolRepository.GetAsync(id);
+            return ObjectMapper.Map<FyersSymbol, FyersSymbolDto>(fyersSymbol);
         }
 
-        public async Task<PagedResultDto<FyersRawSymbolDto>> GetListAsync(GetFyersRawSymbolListDto input)
+        public async Task<PagedResultDto<FyersSymbolDto>> GetListAsync(GetFyersSymbolListDto input)
         {
             if (input.Sorting.IsNullOrWhiteSpace())
             {
-                input.Sorting = nameof(FyersRawSymbol.Exchange);
+                input.Sorting = nameof(FyersSymbol.Exchange);
             }
 
-            var fyersRawSymbols = await _fyersRawSymbolRepository.GetListAsync(input.SkipCount, input.MaxResultCount, input.Sorting, input.Filter);
+            var fyersSymbols = await _fyersSymbolRepository.GetListAsync(input.SkipCount, input.MaxResultCount, input.Sorting, input.Filter);
 
             var totalCount = input.Filter == null
-                ? await _fyersRawSymbolRepository.CountAsync()
-                : await _fyersRawSymbolRepository.CountAsync(fyersCredentials => fyersCredentials.Exchange.Contains(input.Filter));
+                ? await _fyersSymbolRepository.CountAsync()
+                : await _fyersSymbolRepository.CountAsync(fyersCredentials => fyersCredentials.Description.Contains(input.Filter));
 
-            return new PagedResultDto<FyersRawSymbolDto>(totalCount, ObjectMapper.Map<List<FyersRawSymbol>, List<FyersRawSymbolDto>>(fyersRawSymbols));
+            return new PagedResultDto<FyersSymbolDto>(totalCount, ObjectMapper.Map<List<FyersSymbol>, List<FyersSymbolDto>>(fyersSymbols));
         }
 
         public async Task CheckSymbolsAsync()
@@ -81,19 +81,19 @@ namespace NaniTrader.Fyers
 
         public async Task<List<string>> GetUnderlyingSymbolsAsync()
         {
-            var symbols = await _fyersRawSymbolRepository.GetUnderlyingSymbolsAsync();
+            var symbols = await _fyersSymbolRepository.GetUnderlyingSymbolsAsync();
 
             return symbols.Where(x => x.Equals("NIFTY", StringComparison.OrdinalIgnoreCase) || x.Equals("BANKNIFTY", StringComparison.OrdinalIgnoreCase)).ToList();
         }
 
-        public async Task<List<string>> GetExpiryDatesAsync(string underlyingSymbol)
+        public async Task<List<DateTimeOffset>> GetExpiryDatesAsync(string underlyingSymbol)
         {
-            return await _fyersRawSymbolRepository.GetExpiryDatesAsync(underlyingSymbol);
+            return await _fyersSymbolRepository.GetExpiryDatesAsync(underlyingSymbol);
         }
 
-        public async Task<List<string>> GetStrikesAsync(string underlyingSymbol)
+        public async Task<List<decimal>> GetStrikesAsync(string underlyingSymbol)
         {
-            return await _fyersRawSymbolRepository.GetStrikesAsync(underlyingSymbol);
+            return await _fyersSymbolRepository.GetStrikesAsync(underlyingSymbol);
         }
 
         public async Task<OptionChainDto> GetOptionChainAsync(string underlyingSymbol)
@@ -102,8 +102,8 @@ namespace NaniTrader.Fyers
             optionChain.Underlying = underlyingSymbol;
             var optionSymbolDtos = new List<OptionSymbolDto>();
             var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
-            var optionRawSymbols = await _fyersRawSymbolRepository.GetOptionSymbolsAsync(underlyingSymbol);
-            var optionSymbolTickers = optionRawSymbols.Select(x => x.Column10).ToList();
+            var optionSymbols = await _fyersSymbolRepository.GetOptionSymbolsAsync(underlyingSymbol);
+            var optionSymbolTickers = optionSymbols.Select(x => x.SymbolName).ToList();
             var optionQuotes = new List<Quote>();
             foreach (var optionSymbolTickersBatch in optionSymbolTickers.Batch(50))
             {
@@ -117,12 +117,12 @@ namespace NaniTrader.Fyers
             foreach (var optionSymbolTicker in optionSymbolTickers)
             {
                 var optionSymbolDto = new OptionSymbolDto();
-                var optionRawSymbol = optionRawSymbols.FirstOrDefault(x => x.Column10 == optionSymbolTicker);
+                var optionSymbol = optionSymbols.FirstOrDefault(x => x.SymbolName == optionSymbolTicker);
                 var optionQuote = optionQuotes.FirstOrDefault(x => x.n == optionSymbolTicker);
                 optionSymbolDto.Ticker = optionSymbolTicker;
-                optionSymbolDto.Strike = Convert.ToDecimal(optionRawSymbol.Column16);
-                optionSymbolDto.Expiration = optionRawSymbol.Column9;
-                optionSymbolDto.Type = optionRawSymbol.Column17;
+                optionSymbolDto.Strike = optionSymbol.StrikePrice.Amount;
+                optionSymbolDto.Expiration = optionSymbol.ExpiryTime;
+                optionSymbolDto.Type = optionSymbol.OptionRight.ToString();
                 optionSymbolDto.Last = Convert.ToDecimal(optionQuote.v.lp);
                 optionSymbolDto.Ask = Convert.ToDecimal(optionQuote.v.ask);
                 optionSymbolDto.Bid = Convert.ToDecimal(optionQuote.v.bid);

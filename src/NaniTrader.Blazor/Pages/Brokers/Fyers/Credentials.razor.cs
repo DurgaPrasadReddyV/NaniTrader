@@ -33,6 +33,8 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task GetFyersCredentialsAsync()
         {
             FyersCredentials = await FyersCredentialsAppService.GetCurrentUserAsync();
+            if (FyersCredentials is null)
+                FyersCredentials = new FyersCredentialsDto();
             StateHasChanged();
         }
 
@@ -62,6 +64,14 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task OpenEditFyersCredentialsModal()
         {
             var fyersCredentials = await FyersCredentialsAppService.GetCurrentUserAsync();
+
+            if (fyersCredentials is null)
+            {
+                var infoMessage = L["NothingToUpdate"];
+                await Message.Info(infoMessage);
+                return;
+            }
+
             await EditValidationsRef.ClearAll();
 
             EditingFyersCredentialsId = fyersCredentials.Id;
@@ -87,6 +97,14 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task DeleteFyersCredentialsAsync()
         {
             var fyersCredentials = await FyersCredentialsAppService.GetCurrentUserAsync();
+
+            if (fyersCredentials is null)
+            {
+                var infoMessage = L["NothingToDelete"];
+                await Message.Info(infoMessage);
+                return;
+            }
+
             var confirmMessage = L["FyersCredentialsDeletionConfirmationMessage", fyersCredentials.AppId];
             if (!await Message.Confirm(confirmMessage))
             {

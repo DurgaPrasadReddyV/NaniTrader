@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NaniTrader.EntityFrameworkCore;
-using NaniTrader.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
 using Microsoft.OpenApi.Models;
@@ -16,7 +15,6 @@ using OpenIddict.Validation.AspNetCore;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
-using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
@@ -35,7 +33,6 @@ namespace NaniTrader;
 [DependsOn(
     typeof(NaniTraderHttpApiModule),
     typeof(AbpAutofacModule),
-    typeof(AbpAspNetCoreMultiTenancyModule),
     typeof(NaniTraderApplicationModule),
     typeof(NaniTraderEntityFrameworkCoreModule),
     typeof(AbpAspNetCoreMvcUiLeptonXLiteThemeModule),
@@ -198,11 +195,6 @@ public class NaniTraderHttpApiHostModule : AbpModule
         app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
-
-        if (MultiTenancyConsts.IsEnabled)
-        {
-            app.UseMultiTenancy();
-        }
 
         app.UseUnitOfWork();
         app.UseAuthorization();

@@ -15,34 +15,40 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
 {
     public class RemoveExpiredSymbolsJob : AsyncBackgroundJob<RemoveExpiredSymbolsArgs>, ITransientDependency
     {
-        private readonly IFyersRawSymbolRepository _fyersRawSymbolRepository;
+        private readonly IFyersSymbolRepository _fyersSymbolRepository;
         private readonly FyersPublicApiClient _fyersPublicApiClient;
 
-        public RemoveExpiredSymbolsJob(FyersPublicApiClient fyersPublicApiClient, IFyersRawSymbolRepository fyersRawSymbolRepository)
+        public RemoveExpiredSymbolsJob(FyersPublicApiClient fyersPublicApiClient, IFyersSymbolRepository fyersSymbolRepository)
         {
-            _fyersRawSymbolRepository = fyersRawSymbolRepository;
+            _fyersSymbolRepository = fyersSymbolRepository;
             _fyersPublicApiClient = fyersPublicApiClient;
         }
 
         public override async Task ExecuteAsync(RemoveExpiredSymbolsArgs args)
         {
-            List<FyersRawSymbolDto> fyersRawSymbolDtos;
+            List<FyersSymbolCsvMap> fyersSymbolCsvMaps;
             var stream = await _fyersPublicApiClient.DownloadSymbolsAsync(args.Exchange);
             var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture) { Delimiter = ",", HasHeaderRecord = false };
             using (var reader = new StreamReader(stream))
             using (var csv = new CsvReader(reader, csvConfig))
             {
-                csv.Context.RegisterClassMap<FyersRawSymbolMap>();
-                fyersRawSymbolDtos = csv.GetRecords<FyersRawSymbolDto>().ToList();
+                csv.Context.RegisterClassMap<FyersSymbolCsvMapper>();
+                fyersSymbolCsvMaps = csv.GetRecords<FyersSymbolCsvMap>().ToList();
             }
 
-            var symbolsFromDatabase = await _fyersRawSymbolRepository.GetListAsync(x => x.Exchange == args.Exchange);
+            var exchange = Exchange.UNKNOWN;
+            if (args.Exchange == "NSE_CM")
+                exchange = Exchange.NSE_CM;
+            if (args.Exchange == "NSE_FO")
+                exchange = Exchange.NSE_FNO;
+
+            var symbolsFromDatabase = await _fyersSymbolRepository.GetListAsync(x => x.Exchange == exchange);
 
             foreach (var symbolFromDatabase in symbolsFromDatabase)
             {
-                var fyersRawSymbolDto = fyersRawSymbolDtos.FirstOrDefault(x => x.Column1 == symbolFromDatabase.Column1);
-                if (fyersRawSymbolDto is null)
-                    await _fyersRawSymbolRepository.DeleteAsync(symbolFromDatabase, true);
+                var fyersSymbolCsvMap = fyersSymbolCsvMaps.FirstOrDefault(x => x.Column1 == symbolFromDatabase.SymbolLongId);
+                if (fyersSymbolCsvMap is null)
+                    await _fyersSymbolRepository.DeleteAsync(symbolFromDatabase, true);
             }
         }
     }

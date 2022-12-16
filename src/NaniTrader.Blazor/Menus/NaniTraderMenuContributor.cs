@@ -39,8 +39,8 @@ public class NaniTraderMenuContributor : IMenuContributor
         var fyersMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers", l["Menu:Brokers:Fyers"], icon: "fa fa-book");
         var fyersCredentialsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Credentials", l["Menu:Brokers:Fyers:Credentials"],url: "/brokers/fyers/credentials", icon: "fa fa-book");
         fyersMenuItem.AddItem(fyersCredentialsMenuItem);
-        var fyersRawSymbolsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.RawSymbols", l["Menu:Brokers:Fyers:RawSymbols"], url: "/brokers/fyers/rawsymbols", icon: "fa fa-book");
-        fyersMenuItem.AddItem(fyersRawSymbolsMenuItem);
+        var fyersSymbolsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Symbols", l["Menu:Brokers:Fyers:Symbols"], url: "/brokers/fyers/symbols", icon: "fa fa-book");
+        fyersMenuItem.AddItem(fyersSymbolsMenuItem);
         var fyersOptionChainMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.OptionChain", l["Menu:Brokers:Fyers:OptionChain"], url: "/brokers/fyers/optionchain", icon: "fa fa-book");
         fyersMenuItem.AddItem(fyersOptionChainMenuItem);
         brokersMenu.AddItem(fyersMenuItem);

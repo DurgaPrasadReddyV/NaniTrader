@@ -12,9 +12,9 @@ public static class NaniTraderPermissions
         public const string Default = GroupName + ".FyersCredentials";
     }
 
-    public static class FyersRawSymbols
+    public static class FyersSymbols
     {
-        public const string Default = GroupName + ".FyersRawSymbols";
+        public const string Default = GroupName + ".FyersSymbols";
     }
 
     public static class Hangfire

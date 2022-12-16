@@ -16,7 +16,6 @@ using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.Identity.Blazor.WebAssembly;
 using Volo.Abp.SettingManagement.Blazor.WebAssembly;
-using Volo.Abp.TenantManagement.Blazor.WebAssembly;
 
 namespace NaniTrader.Blazor;
 
@@ -25,7 +24,6 @@ namespace NaniTrader.Blazor;
     typeof(NaniTraderHttpApiClientModule),
     typeof(AbpAspNetCoreComponentsWebAssemblyLeptonXLiteThemeModule),
     typeof(AbpIdentityBlazorWebAssemblyModule),
-    typeof(AbpTenantManagementBlazorWebAssemblyModule),
     typeof(AbpSettingManagementBlazorWebAssemblyModule)
 )]
 public class NaniTraderBlazorModule : AbpModule

@@ -52,7 +52,7 @@ namespace NaniTrader.Fyers
         public void UpdateTokenAsync(
             FyersCredentials fyersCredentials,
             [NotNull] string token,
-            [NotNull] DateTime tokenExpiration)
+            [NotNull] DateTimeOffset tokenExpiration)
         {
             Check.NotNull(fyersCredentials, nameof(fyersCredentials));
             fyersCredentials.Token = token;

@@ -8,8 +8,6 @@ namespace NaniTrader.Fyers
         public string AppId { get; set; }
         public string SecretId { get; set; }
         public string RedirectUri { get; set; }
-        public string Token { get; set; }
-        public DateTime TokenExpiration { get; set; }
-        public Guid UserId { get; set; }
+        public DateTimeOffset TokenExpiration { get; set; }
     }
 }

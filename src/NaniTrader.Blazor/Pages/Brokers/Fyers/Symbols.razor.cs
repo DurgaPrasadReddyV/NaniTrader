@@ -8,40 +8,42 @@ using System.Linq;
 
 namespace NaniTrader.Blazor.Pages.Brokers.Fyers
 {
-    public partial class RawSymbols
+    public partial class Symbols
     {
-        private IReadOnlyList<FyersRawSymbolDto> FyersRawSymbolList { get; set; }
+        private IReadOnlyList<FyersSymbolDto> FyersSymbolList { get; set; }
 
         private int PageSize { get; } = LimitedResultRequestDto.DefaultMaxResultCount;
         private int CurrentPage { get; set; }
         private string CurrentSorting { get; set; }
+        private string SearchFilter { get; set; }
         private int TotalCount { get; set; }
 
         private bool IsTaskRunning = false;
 
-        public RawSymbols()
+        public Symbols()
         {
         }
 
         protected override async Task OnInitializedAsync()
         {
-            await GetFyersRawSymbolsAsync();
+            await GetFyersSymbolsAsync();
         }
 
-        private async Task GetFyersRawSymbolsAsync()
+        private async Task GetFyersSymbolsAsync()
         {
-            var result = await FyersRawSymbolAppService.GetListAsync(new GetFyersRawSymbolListDto
+            var result = await FyersSymbolAppService.GetListAsync(new GetFyersSymbolListDto
                                         {
                                             MaxResultCount = PageSize,
                                             SkipCount = CurrentPage * PageSize,
-                                            Sorting = CurrentSorting
+                                            Sorting = CurrentSorting,
+                                            Filter  = SearchFilter
                                         });
 
-            FyersRawSymbolList = result.Items;
+            FyersSymbolList = result.Items;
             TotalCount = (int)result.TotalCount;
         }
 
-        private async Task OnDataGridReadAsync(DataGridReadDataEventArgs<FyersRawSymbolDto> e)
+        private async Task OnDataGridReadAsync(DataGridReadDataEventArgs<FyersSymbolDto> e)
         {
             CurrentSorting = e.Columns
                 .Where(c => c.SortDirection != SortDirection.Default)
@@ -49,26 +51,29 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
                 .JoinAsString(",");
             CurrentPage = e.Page - 1;
 
-            await GetFyersRawSymbolsAsync();
+            var search = e.Columns.FirstOrDefault(c => c.SearchValue != null && c.Field == "Description");
+            if (search != null) this.SearchFilter = search.SearchValue.ToString();
+
+            await GetFyersSymbolsAsync();
 
             StateHasChanged();
         }
 
         private async Task LoadNewSymbolsAsync()
         {
-            await FyersRawSymbolAppService.DownloadNewSymbolsAsync();
+            await FyersSymbolAppService.DownloadNewSymbolsAsync();
             IsTaskRunning = true;
         }
 
         private async Task UpdateExistingSymbolsAsync()
         {
-            await FyersRawSymbolAppService.UpdateExistingSymbolsAsync();
+            await FyersSymbolAppService.UpdateExistingSymbolsAsync();
             IsTaskRunning = true;
         }
 
         private async Task RemoveExpiredSymbolsAsync()
         {
-            await FyersRawSymbolAppService.DeleteExpiredSymbolsAsync();
+            await FyersSymbolAppService.DeleteExpiredSymbolsAsync();
             IsTaskRunning = true;
         }
     }
