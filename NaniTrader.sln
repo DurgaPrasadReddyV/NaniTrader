@@ -37,6 +37,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.Host", "src\Nani
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.Blazor", "src\NaniTrader.Blazor\NaniTrader.Blazor.csproj", "{27B2DDC7-8B75-4322-A312-25419C15D9D8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaniTrader.MongoDb", "src\NaniTrader.MongoDb\NaniTrader.MongoDb.csproj", "{F32DC931-F154-4B41-AD2A-470C771E9074}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaniTrader.MongoDb.Tests", "test\NaniTrader.MongoDb.Tests\NaniTrader.MongoDb.Tests.csproj", "{B818174F-A4DD-4C61-BC19-A3FEB7650A39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +107,14 @@ Global
 		{27B2DDC7-8B75-4322-A312-25419C15D9D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27B2DDC7-8B75-4322-A312-25419C15D9D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27B2DDC7-8B75-4322-A312-25419C15D9D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32DC931-F154-4B41-AD2A-470C771E9074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32DC931-F154-4B41-AD2A-470C771E9074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32DC931-F154-4B41-AD2A-470C771E9074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32DC931-F154-4B41-AD2A-470C771E9074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B818174F-A4DD-4C61-BC19-A3FEB7650A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B818174F-A4DD-4C61-BC19-A3FEB7650A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B818174F-A4DD-4C61-BC19-A3FEB7650A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B818174F-A4DD-4C61-BC19-A3FEB7650A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -123,6 +135,8 @@ Global
 		{AA94D832-1CCC-4715-95A9-A483F23A1A5D} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 		{748584B1-BA69-4F6A-81AA-F4BDE6BCE29D} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
 		{27B2DDC7-8B75-4322-A312-25419C15D9D8} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
+		{F32DC931-F154-4B41-AD2A-470C771E9074} = {CA9AC87F-097E-4F15-8393-4BC07735A5B0}
+		{B818174F-A4DD-4C61-BC19-A3FEB7650A39} = {04DBDB01-70F4-4E06-B468-8F87850B22BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28315BFD-90E7-4E14-A2EA-F3D23AF4126F}

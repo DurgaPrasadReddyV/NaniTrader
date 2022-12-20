@@ -13,10 +13,10 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
     {
         private IReadOnlyList<FyersSymbolStrikeDto> FyersSymbolStrikeList { get; set; }
         private List<string> UnderlyingSymbols { get; set; } = new List<string>();
-        private List<DateTimeOffset> UnderlyingSymbolExpiryDates { get; set; } = new List<DateTimeOffset>();
+        private List<DateTime> UnderlyingSymbolExpiryDates { get; set; } = new List<DateTime>();
         private List<decimal> UnderlyingSymbolStrikes { get; set; } = new List<decimal>();
         private string UnderlyingSelectedValue { get; set; }
-        private DateTimeOffset ExpiryDateSelectedValue { get; set; }
+        private DateTime ExpiryDateSelectedValue { get; set; }
         private decimal StrikeSelectedValue { get; set; }
         private int PageSize { get; } = LimitedResultRequestDto.DefaultMaxResultCount;
         private int CurrentPage { get; set; }
@@ -65,7 +65,7 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
             await Task.CompletedTask;
         }
 
-        private async Task OnExpiryDateSelectedValueChangedAsync(DateTimeOffset value)
+        private async Task OnExpiryDateSelectedValueChangedAsync(DateTime value)
         {
             ExpiryDateSelectedValue = value;
             await GetFyersSymbolStrikeAsync(UnderlyingSelectedValue);

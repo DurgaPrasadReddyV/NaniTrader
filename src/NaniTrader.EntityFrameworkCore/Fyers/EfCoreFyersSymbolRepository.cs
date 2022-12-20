@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NaniTrader.EntityFrameworkCore;
+using NaniTrader.Exchanges.Securities.Options;
+using NaniTrader.Brokers.Fyers.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using NaniTrader.Brokers.Fyers;
 
 namespace NaniTrader.Fyers
 {
@@ -54,7 +57,7 @@ namespace NaniTrader.Fyers
                 .ToListAsync();
         }
 
-        public async Task<List<DateTimeOffset>> GetExpiryDatesAsync(string underlyingSymbol)
+        public async Task<List<DateTime>> GetExpiryDatesAsync(string underlyingSymbol)
         {
             var dbSet = await GetDbSetAsync();
             return await dbSet

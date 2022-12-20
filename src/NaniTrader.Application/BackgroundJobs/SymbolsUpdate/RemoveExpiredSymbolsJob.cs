@@ -10,6 +10,8 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using NaniTrader.ApiClients;
 using Volo.Abp.Domain.Repositories;
+using NaniTrader.Exchanges;
+using NaniTrader.Brokers.Fyers.Interfaces;
 
 namespace NaniTrader.BackgroundJobs.SymbolsUpdate
 {
@@ -36,11 +38,11 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
                 fyersSymbolCsvMaps = csv.GetRecords<FyersSymbolCsvMap>().ToList();
             }
 
-            var exchange = Exchange.UNKNOWN;
+            var exchange = ExchangeIdentifier.UNKNOWN;
             if (args.Exchange == "NSE_CM")
-                exchange = Exchange.NSE_CM;
+                exchange = ExchangeIdentifier.NSE_CM;
             if (args.Exchange == "NSE_FO")
-                exchange = Exchange.NSE_FNO;
+                exchange = ExchangeIdentifier.NSE_FNO;
 
             var symbolsFromDatabase = await _fyersSymbolRepository.GetListAsync(x => x.Exchange == exchange);
 

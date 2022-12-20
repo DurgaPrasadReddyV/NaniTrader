@@ -30,10 +30,10 @@
                 <Paragraph Alignment="TextAlignment.Right">
                     <Field>
                         <FieldLabel>@L["ExpiryDateRange"]</FieldLabel>
-                        <Select TValue="DateTimeOffset" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
+                        <Select TValue="DateTime" SelectedValue="@ExpiryDateSelectedValue" SelectedValueChanged="@OnExpiryDateSelectedValueChangedAsync">
                             @foreach (var selectedUnderlyingExpiryDate in UnderlyingSymbolExpiryDates)
                             {
-                                <SelectItem TValue="DateTimeOffset" Value="@selectedUnderlyingExpiryDate">
+                                <SelectItem TValue="DateTime" Value="@selectedUnderlyingExpiryDate">
                                     @selectedUnderlyingExpiryDate
                                 </SelectItem>
                             }

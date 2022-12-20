@@ -10,6 +10,7 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using NaniTrader.ApiClients;
 using System;
+using NaniTrader.Brokers.Fyers.Interfaces;
 
 namespace NaniTrader.BackgroundJobs.SymbolsUpdate
 {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NaniTrader.Brokers.Fyers;
 using NaniTrader.Fyers;
 
 namespace NaniTrader;

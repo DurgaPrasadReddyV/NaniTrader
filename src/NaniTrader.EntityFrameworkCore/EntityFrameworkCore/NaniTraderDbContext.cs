@@ -1,9 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NaniTrader.Fyers;
+using NaniTrader.Brokers.Fyers;
+using NaniTrader.Exchanges;
+using NaniTrader.Exchanges.Securities.Equities;
+using NaniTrader.Exchanges.Securities.Futures;
+using NaniTrader.Exchanges.Securities.Options;
+using System.Collections.Generic;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
@@ -17,14 +23,20 @@ namespace NaniTrader.EntityFrameworkCore;
 
 [ReplaceDbContext(typeof(IIdentityDbContext))]
 [ConnectionStringName("Default")]
-public class NaniTraderDbContext :
-    AbpDbContext<NaniTraderDbContext>,
-    IIdentityDbContext
+public class NaniTraderDbContext : AbpDbContext<NaniTraderDbContext>, IIdentityDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
 
     public DbSet<FyersCredentials> FyersCredentials { get; set; }
     public DbSet<FyersSymbol> FyersSymbols { get; set; }
+    public DbSet<Equity> Equities { get; set; }
+    public DbSet<ETF> ETFs { get; set; }
+    public DbSet<Index> Indexes { get; set; }
+    public DbSet<EquityFuture> EquityFutures { get; set; }
+    public DbSet<IndexFuture> IndexFutures { get; set; }
+    public DbSet<EquityOption> EquityOptions { get; set; }
+    public DbSet<IndexOption> IndexOptions { get; set; }
+    public DbSet<Exchange> Exchanges { get; set; }
 
     #region Entities from the modules
 
@@ -80,7 +92,7 @@ public class NaniTraderDbContext :
 
         builder.Entity<FyersCredentials>(b =>
         {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersCredentials",NaniTraderConsts.DbSchema);
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersCredentials", NaniTraderConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
 
             b.HasOne<IdentityUser>().WithMany().HasForeignKey(x => x.UserId).IsRequired();
@@ -88,7 +100,7 @@ public class NaniTraderDbContext :
 
         builder.Entity<FyersSymbol>(b =>
         {
-            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersSymbols",NaniTraderConsts.DbSchema);
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "FyersSymbols", NaniTraderConsts.DbSchema);
             b.ConfigureByConvention(); //auto configure for the base class props
 
             b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);

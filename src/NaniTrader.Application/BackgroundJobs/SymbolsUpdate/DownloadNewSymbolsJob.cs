@@ -10,6 +10,11 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using NaniTrader.ApiClients;
 using System;
+using NaniTrader.Exchanges;
+using NaniTrader.Currencies;
+using NaniTrader.Exchanges.Securities.Options;
+using NaniTrader.Brokers.Fyers.Interfaces;
+using NaniTrader.Brokers.Fyers;
 
 namespace NaniTrader.BackgroundJobs.SymbolsUpdate
 {
@@ -36,11 +41,11 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
                 fyersSymbolCsvMaps = csv.GetRecords<FyersSymbolCsvMap>().ToList();
             }
 
-            var exchange = Exchange.UNKNOWN;
+            var exchange = ExchangeIdentifier.UNKNOWN;
             if (args.Exchange == "NSE_CM")
-                exchange = Exchange.NSE_CM;
+                exchange = ExchangeIdentifier.NSE_CM;
             if (args.Exchange == "NSE_FO")
-                exchange = Exchange.NSE_FNO;
+                exchange = ExchangeIdentifier.NSE_FNO;
 
             foreach (var fyersSymbolCsvMap in fyersSymbolCsvMaps)
             {
@@ -70,8 +75,8 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
                 if (fyersSymbolCsvMap.Column3 == 15)
                     symbolType = SymbolType.EQUITY_OPTION;
 
-                var updatedTime = DateTimeOffset.Parse(fyersSymbolCsvMap.Column8);
-                var expiryTime = DateTimeOffset.FromUnixTimeSeconds(fyersSymbolCsvMap.Column9);
+                var updatedTime = DateTime.Parse(fyersSymbolCsvMap.Column8);
+                var expiryTime = DateTimeOffset.FromUnixTimeSeconds(fyersSymbolCsvMap.Column9).UtcDateTime;
                 var priceStep = new Currency("INR", fyersSymbolCsvMap.Column5);
                 var strikePrice = new Currency("INR", fyersSymbolCsvMap.Column16);
 
