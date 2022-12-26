@@ -11,43 +11,28 @@ namespace NaniTrader.MarketData
 {
     public class Touchline : FullAuditedAggregateRoot<Guid>
     {
-        public double ch { get; set; }
+        public Guid ExchangeSecurityId { get; private set; }
+        public TouchlineDataProvider TouchlineDataProvider { get; private set; }
+        
+        public DateTime RecordedTime { get; private set; }
+        
+        public double LastTradedPrice { get; private set; }
 
-        public double chp { get; set; }
+        public double Spread { get; private set; }
 
-        public double lp { get; set; }
+        public double Ask { get; set; }
 
-        public double spread { get; set; }
+        public double Bid { get; set; }
 
-        public double ask { get; set; }
+        public double OpenPrice { get; set; }
 
-        public double bid { get; set; }
+        public double HighPrice { get; set; }
 
-        public double open_price { get; set; }
+        public double LowPrice { get; set; }
 
-        public double high_price { get; set; }
+        public double PreviousClosePrice { get; set; }
 
-        public double low_price { get; set; }
-
-        public double prev_close_price { get; set; }
-
-        public long volume { get; set; }
-
-        public string short_name { get; set; }
-
-        public string exchange { get; set; }
-
-        public string description { get; set; }
-
-        public string original_name { get; set; }
-
-        public string symbol { get; set; }
-
-        public string fyToken { get; set; }
-
-        public long tt { get; set; }
-
-        public Candle cmd { get; set; }
+        public long Volume { get; set; }
 
         private Touchline()
         {

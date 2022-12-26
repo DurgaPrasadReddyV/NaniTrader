@@ -11,7 +11,7 @@ using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using NaniTrader.Brokers.Fyers;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.Brokers.Fyers
 {
     public class EfCoreFyersSymbolRepository
         : EfCoreRepository<NaniTraderDbContext, FyersSymbol, Guid>,

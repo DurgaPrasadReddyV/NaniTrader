@@ -1,7 +1,7 @@
 ﻿using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.Brokers.Fyers
 {
     public class FyersSymbolDto : EntityDto<Guid>
     {

@@ -32,20 +32,24 @@ public class NaniTraderMenuContributor : IMenuContributor
     {
         var l = context.GetLocalizer<NaniTraderResource>();
 
-        var dashboardMenuItem = new ApplicationMenuItem("NaniTrader.Dashboard", l["Menu:Dashboard"],url: "/", icon: "fas fa-home");
+        var dashboardMenuItem = new ApplicationMenuItem("NaniTrader.Dashboard", l["Dashboard"],url: "/dashboard", icon: "fas fa-home");
         context.Menu.AddItem(dashboardMenuItem);
 
-        var brokersMenu = new ApplicationMenuItem("NaniTrader.Brokers", l["Menu:Brokers"], icon: "fa fa-book");
-        var fyersMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers", l["Menu:Brokers:Fyers"], icon: "fa fa-book");
-        var fyersCredentialsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Credentials", l["Menu:Brokers:Fyers:Credentials"],url: "/brokers/fyers/credentials", icon: "fa fa-book");
+        var brokersMenu = new ApplicationMenuItem("NaniTrader.Brokers", l["Brokers"], icon: "fa fa-bars");
+        var brokersConfigureMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Configure", l["Configure"], url: "/brokers/configure", icon: "fa fa-bars");
+        var fyersMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers", l["Fyers"], icon: "fa fa-bars");
+        var fyersCredentialsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Credentials", l["Credentials"],url: "/brokers/fyers/credentials", icon: "fa fa-bars");
         fyersMenuItem.AddItem(fyersCredentialsMenuItem);
-        var fyersSymbolsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Symbols", l["Menu:Brokers:Fyers:Symbols"], url: "/brokers/fyers/symbols", icon: "fa fa-book");
+        var fyersSymbolsMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.Symbols", l["Symbols"], url: "/brokers/fyers/symbols", icon: "fa fa-bars");
         fyersMenuItem.AddItem(fyersSymbolsMenuItem);
-        var fyersOptionChainMenuItem = new ApplicationMenuItem("NaniTrader.Brokers.Fyers.OptionChain", l["Menu:Brokers:Fyers:OptionChain"], url: "/brokers/fyers/optionchain", icon: "fa fa-book");
-        fyersMenuItem.AddItem(fyersOptionChainMenuItem);
+        brokersMenu.AddItem(brokersConfigureMenuItem);
         brokersMenu.AddItem(fyersMenuItem);
         context.Menu.AddItem(brokersMenu);
 
+        var exchangesMenu = new ApplicationMenuItem("NaniTrader.Exchanges", l["Exchanges"], icon: "fa fa-bars");
+        var exchangesConfigureMenuItem = new ApplicationMenuItem("NaniTrader.Exchanges.Configure", l["Configure"], url: "/exchanges/configure", icon: "fa fa-bars");
+        exchangesMenu.AddItem(exchangesConfigureMenuItem);
+        context.Menu.AddItem(exchangesMenu);
         return Task.CompletedTask;
     }
 

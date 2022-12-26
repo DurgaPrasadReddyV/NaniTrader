@@ -1,6 +1,5 @@
 ﻿using CsvHelper.Configuration;
 using CsvHelper;
-using NaniTrader.Fyers;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -15,21 +14,24 @@ using NaniTrader.Currencies;
 using NaniTrader.Exchanges.Securities.Options;
 using NaniTrader.Brokers.Fyers.Interfaces;
 using NaniTrader.Brokers.Fyers;
+using NaniTrader.CsvMappers;
+using Hangfire;
 
-namespace NaniTrader.BackgroundJobs.SymbolsUpdate
+namespace NaniTrader.BackgroundJobs.FyersSymbols
 {
-    public class DownloadNewSymbolsJob : AsyncBackgroundJob<DownloadNewSymbolsArgs>, ITransientDependency
+    [DisableConcurrentExecution(timeoutInSeconds: 10 * 60)]
+    public class SynchronizeSymbolsJob : AsyncBackgroundJob<SynchronizeSymbolsArgs>, ITransientDependency
     {
         private readonly IFyersSymbolRepository _fyersSymbolRepository;
         private readonly FyersPublicApiClient _fyersPublicApiClient;
 
-        public DownloadNewSymbolsJob(FyersPublicApiClient fyersPublicApiClient, IFyersSymbolRepository fyersSymbolRepository)
+        public SynchronizeSymbolsJob(FyersPublicApiClient fyersPublicApiClient, IFyersSymbolRepository fyersSymbolRepository)
         {
             _fyersSymbolRepository = fyersSymbolRepository;
             _fyersPublicApiClient = fyersPublicApiClient;
         }
 
-        public override async Task ExecuteAsync(DownloadNewSymbolsArgs args)
+        public override async Task ExecuteAsync(SynchronizeSymbolsArgs args)
         {
             List<FyersSymbolCsvMap> fyersSymbolCsvMaps;
             var stream = await _fyersPublicApiClient.DownloadSymbolsAsync(args.Exchange);
@@ -86,6 +88,15 @@ namespace NaniTrader.BackgroundJobs.SymbolsUpdate
                     updatedTime, expiryTime, strikePrice, optionRight, fyersSymbolCsvMap.Column11);
 
                 await _fyersSymbolRepository.InsertAsync(fyersSymbol, true);
+            }
+
+            var symbolsFromDatabase = await _fyersSymbolRepository.GetListAsync(x => x.Exchange == exchange);
+
+            foreach (var symbolFromDatabase in symbolsFromDatabase)
+            {
+                var fyersSymbolCsvMap = fyersSymbolCsvMaps.FirstOrDefault(x => x.Column1 == symbolFromDatabase.SymbolLongId);
+                if (fyersSymbolCsvMap is null)
+                    await _fyersSymbolRepository.DeleteAsync(symbolFromDatabase, true);
             }
         }
     }

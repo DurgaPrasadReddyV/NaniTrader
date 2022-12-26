@@ -9,5 +9,7 @@ namespace NaniTrader.Exchanges.Interfaces
     public interface IExchangeRepository : IRepository<Exchange, Guid>
     {
         Task<List<Exchange>> GetListAsync(int skipCount, int maxResultCount, string sorting, string filter = null);
+
+        Task<Exchange> FindByExchangeIdAsync(ExchangeIdentifier exchangeIdentifier);
     }
 }

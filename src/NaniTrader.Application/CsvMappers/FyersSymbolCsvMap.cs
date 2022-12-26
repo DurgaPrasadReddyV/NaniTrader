@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.CsvMappers
 {
     public class FyersSymbolCsvMap
     {

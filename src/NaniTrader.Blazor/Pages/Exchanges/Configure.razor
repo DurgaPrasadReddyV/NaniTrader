@@ -1,0 +1,134 @@
+﻿@page "/exchanges/configure"
+@using NaniTrader.Localization
+@inherits NaniTraderComponentBase
+@inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
+@inject IExchangeAppService ExchangeAppService
+
+<CardDeck>
+    <Card>
+        <CardHeader>NSE CM</CardHeader>
+        <CardBody>
+            <Button Color="Color.Primary" Clicked="OpenConfigureNSECMExchangeModalAsync">Configure</Button>
+        </CardBody>
+    </Card>
+    <Card>
+        <CardHeader>NSE FNO</CardHeader>
+        <CardBody>
+            <Button Color="Color.Primary" Clicked="OpenConfigureNSEFNOExchangeModalAsync">Configure</Button>
+        </CardBody>
+    </Card>
+</CardDeck>
+
+<Modal @ref="ConfigureNSECMExchangeModal">
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewNSECM"]</ModalTitle>
+                <CloseButton Clicked="CloseConfigureNSECMExchangeModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@ConfigureNSECMExchangeValidationsRef" Model="@ConfiguredNSECMExchange" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["ExchangeIdentifier"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSECMExchange.ExchangeIdentifier">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["SecuritiesProvider"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSECMExchange.SecuritiesProvider">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSECMExchange.Description">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseConfigureNSECMExchangeModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="ConfigureNSECMExchangeAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+<Modal @ref="ConfigureNSEFNOExchangeModal">
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewNSEFNO"]</ModalTitle>
+                <CloseButton Clicked="CloseConfigureNSEFNOExchangeModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@ConfigureNSEFNOExchangeValidationsRef" Model="@ConfiguredNSEFNOExchange" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["ExchangeIdentifier"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSEFNOExchange.ExchangeIdentifier">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["SecuritiesProvider"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSEFNOExchange.SecuritiesProvider">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["Description"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredNSEFNOExchange.Description">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseConfigureNSEFNOExchangeModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="ConfigureNSEFNOExchangeAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>

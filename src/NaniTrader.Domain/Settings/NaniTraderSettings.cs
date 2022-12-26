@@ -12,6 +12,16 @@ public static class NaniTraderSettings
         public static class Fyers
         {
             public const string RedirectUri = Prefix + "Brokers.Fyers.RedirectUri";
-        }     
+        }
+    }
+
+    public static class Exchanges
+    {
+        public const string SecuritiesProvider = Prefix + "Exchanges.SecuritiesProvider";
+    }
+
+    public static class MarketData
+    {
+        public const string TouchlineDataProvider = Prefix + "MarketData.TouchlineDataProvider";
     }
 }

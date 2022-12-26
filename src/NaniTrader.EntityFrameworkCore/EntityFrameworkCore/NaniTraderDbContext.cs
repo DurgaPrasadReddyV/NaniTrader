@@ -106,5 +106,63 @@ public class NaniTraderDbContext : AbpDbContext<NaniTraderDbContext>, IIdentityD
             b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
             b.OwnsOne(x => x.StrikePrice).Property(x => x.Amount).HasPrecision(20, 2);
         });
+
+        builder.Entity<Equity>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "Equities", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<ETF>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "ETFs", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<Index>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "Indexes", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<EquityFuture>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "EquityFutures", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<IndexFuture>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "IndexFutures", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<EquityOption>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "EquityOptions", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+            b.OwnsOne(x => x.StrikePrice).Property(x => x.Amount).HasPrecision(20, 2);
+        });
+
+        builder.Entity<IndexOption>(b =>
+        {
+            b.ToTable(NaniTraderConsts.DbTablePrefix + "IndexOptions", NaniTraderConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+
+            b.OwnsOne(x => x.PriceStep).Property(x => x.Amount).HasPrecision(20, 2);
+            b.OwnsOne(x => x.StrikePrice).Property(x => x.Amount).HasPrecision(20, 2);
+        });
     }
 }

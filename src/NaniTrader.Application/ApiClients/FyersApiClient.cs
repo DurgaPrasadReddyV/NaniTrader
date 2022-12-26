@@ -21,9 +21,9 @@ public class FyersApiClient
         return await response.Content.ReadFromJsonAsync<TokenResponse>().ConfigureAwait(false);
     }
 
-    public async Task<List<Quote>> GetQuotesAsync(List<string> symbols, string appId, string token)
+    public async Task<List<Quote>> GetQuotesAsync(IEnumerable<string> symbols, string appId, string token)
     {
-        if (symbols == null || symbols.Count == 0)
+        if (symbols == null || symbols.Count() == 0)
             return new List<Quote>();
 
         var sym = string.Join(",", symbols);

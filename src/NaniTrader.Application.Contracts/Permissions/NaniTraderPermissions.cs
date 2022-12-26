@@ -21,4 +21,14 @@ public static class NaniTraderPermissions
     {
         public const string Default = GroupName + ".Hangfire";
     }
+
+    public static class Exchanges
+    {
+        public const string Default = GroupName + ".Exchanges";
+    }
+
+    public static class ExchangeSecurities
+    {
+        public const string Default = GroupName + ".ExchangeSecurities";
+    }
 }

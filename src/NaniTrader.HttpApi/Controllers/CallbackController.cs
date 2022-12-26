@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NaniTrader.Fyers;
+using NaniTrader.Brokers.Fyers;
 using System.Threading.Tasks;
 
 namespace NaniTrader.Controllers

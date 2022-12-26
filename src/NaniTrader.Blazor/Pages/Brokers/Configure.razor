@@ -1,0 +1,63 @@
+﻿@page "/brokers/configure"
+@using NaniTrader.Localization
+@inherits NaniTraderComponentBase
+@inject AbpBlazorMessageLocalizerHelper<NaniTraderResource> LH
+@inject IFyersCredentialsAppService FyersCredentialsAppService
+
+<CardDeck>
+    <Card>
+        <CardHeader>Fyers</CardHeader>
+        <CardBody>
+            <Button Color="Color.Primary" Clicked="OpenConfigureFyersCredentialsModalAsync">Configure</Button>
+        </CardBody>
+    </Card>
+</CardDeck>
+
+<Modal @ref="ConfigureFyersCredentialsModal">
+    <ModalContent IsCentered="true">
+        <Form>
+            <ModalHeader>
+                <ModalTitle>@L["NewFyersCredentials"]</ModalTitle>
+                <CloseButton Clicked="CloseConfigureFyersCredentialsModalAsync" />
+            </ModalHeader>
+            <ModalBody>
+                <Validations @ref="@ConfigureFyersCredentialsValidationsRef" Model="@ConfiguredFyersCredentials" ValidateOnLoad="false">
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["AppId"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredFyersCredentials.AppId">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                    <Validation MessageLocalizer="@LH.Localize">
+                        <Field>
+                            <FieldLabel>@L["SecretId"]</FieldLabel>
+                            <TextEdit @bind-Text="@ConfiguredFyersCredentials.SecretId">
+                                <Feedback>
+                                    <ValidationError />
+                                </Feedback>
+                            </TextEdit>
+                        </Field>
+                    </Validation>
+                </Validations>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary"
+                        Clicked="CloseConfigureFyersCredentialsModalAsync">
+                    @L["Cancel"]
+                </Button>
+                <Button Color="Color.Primary"
+                        Type="@ButtonType.Submit"
+                        PreventDefaultOnSubmit="true"
+                        Clicked="ConfigureFyersCredentialsAsync">
+                    @L["Save"]
+                </Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+

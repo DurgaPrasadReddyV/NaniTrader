@@ -1,7 +1,7 @@
 ﻿using Blazorise;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
-using NaniTrader.Fyers;
+using NaniTrader.Brokers.Fyers;
 using System.Threading.Tasks;
 using Blazorise.DataGrid;
 using System.Linq;
@@ -11,14 +11,11 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
     public partial class Symbols
     {
         private IReadOnlyList<FyersSymbolDto> FyersSymbolList { get; set; }
-
         private int PageSize { get; } = LimitedResultRequestDto.DefaultMaxResultCount;
         private int CurrentPage { get; set; }
         private string CurrentSorting { get; set; }
         private string SearchFilter { get; set; }
         private int TotalCount { get; set; }
-
-        private bool IsTaskRunning = false;
 
         public Symbols()
         {
@@ -32,12 +29,12 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
         private async Task GetFyersSymbolsAsync()
         {
             var result = await FyersSymbolAppService.GetListAsync(new GetFyersSymbolListDto
-                                        {
-                                            MaxResultCount = PageSize,
-                                            SkipCount = CurrentPage * PageSize,
-                                            Sorting = CurrentSorting,
-                                            Filter  = SearchFilter
-                                        });
+            {
+                MaxResultCount = PageSize,
+                SkipCount = CurrentPage * PageSize,
+                Sorting = CurrentSorting,
+                Filter  = SearchFilter
+            });
 
             FyersSymbolList = result.Items;
             TotalCount = (int)result.TotalCount;
@@ -59,22 +56,6 @@ namespace NaniTrader.Blazor.Pages.Brokers.Fyers
             StateHasChanged();
         }
 
-        private async Task LoadNewSymbolsAsync()
-        {
-            await FyersSymbolAppService.DownloadNewSymbolsAsync();
-            IsTaskRunning = true;
-        }
-
-        private async Task UpdateExistingSymbolsAsync()
-        {
-            await FyersSymbolAppService.UpdateExistingSymbolsAsync();
-            IsTaskRunning = true;
-        }
-
-        private async Task RemoveExpiredSymbolsAsync()
-        {
-            await FyersSymbolAppService.DeleteExpiredSymbolsAsync();
-            IsTaskRunning = true;
-        }
+        private async Task SynchronizeSymbolsAsync() => await FyersSymbolAppService.SynchronizeSymbolsAsync();
     }
 }

@@ -15,7 +15,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Settings;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.Brokers.Fyers
 {
     [Authorize(NaniTraderPermissions.FyersCredentials.Default)]
     public class FyersCredentialsAppService : NaniTraderAppService, IFyersCredentialsAppService
@@ -27,18 +27,11 @@ namespace NaniTrader.Fyers
         public FyersCredentialsAppService(
             IFyersCredentialsRepository fyersCredentialsRepository,
             FyersCredentialsManager fyersCredentialsManager,
-            FyersApiClient fyersApiClient,
-            ISettingProvider settingProvider)
+            FyersApiClient fyersApiClient)
         {
             _fyersCredentialsRepository = fyersCredentialsRepository;
             _fyersCredentialsManager = fyersCredentialsManager;
             _fyersApiClient = fyersApiClient;
-        }
-
-        public async Task<FyersCredentialsDto> GetAsync(Guid id)
-        {
-            var fyersCredentials = await _fyersCredentialsRepository.GetAsync(id);
-            return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCredentials);
         }
 
         public async Task<FyersCredentialsDto> GetCurrentUserAsync()
@@ -47,39 +40,14 @@ namespace NaniTrader.Fyers
             return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCurrentUserCredentials);
         }
 
-        public async Task<PagedResultDto<FyersCredentialsDto>> GetListAsync(GetFyersCredentialsListDto input)
-        {
-            if (input.Sorting.IsNullOrWhiteSpace())
-            {
-                input.Sorting = nameof(FyersCredentials.AppId);
-            }
-
-            var fyersCredentials = await _fyersCredentialsRepository.GetListAsync(
-                input.SkipCount,
-                input.MaxResultCount,
-                input.Sorting,
-                input.Filter
-            );
-
-            var totalCount = input.Filter == null
-                ? await _fyersCredentialsRepository.CountAsync()
-                : await _fyersCredentialsRepository.CountAsync(
-                    fyersCredentials => fyersCredentials.AppId.Contains(input.Filter));
-
-            return new PagedResultDto<FyersCredentialsDto>(
-                totalCount,
-                ObjectMapper.Map<List<FyersCredentials>, List<FyersCredentialsDto>>(fyersCredentials)
-            );
-        }
-
-        public async Task<FyersCredentialsDto> CreateAsync(CreateFyersCredentialsDto input)
+        public async Task<FyersCredentialsDto> ConfigureAsync(ConfigureFyersCredentialsDto input)
         {
             var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
             
             if (fyersCurrentUserCredentials is not null)
                 throw new InvalidOperationException("Account already exists.");
 
-            var fyersCredentials = await _fyersCredentialsManager.CreateAsync(
+            var fyersCredentials = await _fyersCredentialsManager.ConfigureAsync(
                 input.AppId,
                 input.SecretId,
                 await SettingProvider.GetOrNullAsync(NaniTraderSettings.Brokers.Fyers.RedirectUri),
@@ -91,7 +59,7 @@ namespace NaniTrader.Fyers
             return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCredentials);
         }
 
-        public async Task UpdateAsync(Guid id, UpdateFyersCredentialsDto input)
+        public async Task ReconfigureAsync(Guid id, ReconfigureFyersCredentialsDto input)
         {
             var fyersCredentials = await _fyersCredentialsRepository.GetAsync(id);
             _fyersCredentialsManager.UpdateSecretIdAsync(fyersCredentials, input.SecretId);
@@ -129,7 +97,7 @@ namespace NaniTrader.Fyers
             await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task RemoveAsync(Guid id)
         {
             await _fyersCredentialsRepository.DeleteAsync(id);
         }

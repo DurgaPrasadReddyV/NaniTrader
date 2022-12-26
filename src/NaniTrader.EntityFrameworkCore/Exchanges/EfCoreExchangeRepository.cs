@@ -19,6 +19,12 @@ namespace NaniTrader.Exchanges
         {
         }
 
+        public async Task<Exchange> FindByExchangeIdAsync(ExchangeIdentifier exchangeIdentifier)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet.FirstOrDefaultAsync(x => x.ExchangeIdentifier == exchangeIdentifier);
+        }
+
         public async Task<List<Exchange>> GetListAsync(
             int skipCount,
             int maxResultCount,

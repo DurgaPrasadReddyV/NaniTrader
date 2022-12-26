@@ -16,7 +16,7 @@ namespace NaniTrader.Brokers.Fyers
             _fyersCredentialsRepository = fyersCredentialsRepository;
         }
 
-        public async Task<FyersCredentials> CreateAsync(
+        public async Task<FyersCredentials> ConfigureAsync(
             [NotNull] string appId,
             [NotNull] string secretId,
             [NotNull] string redirectUri,

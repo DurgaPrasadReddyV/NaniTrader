@@ -37,9 +37,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.Host", "src\Nani
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.Blazor", "src\NaniTrader.Blazor\NaniTrader.Blazor.csproj", "{27B2DDC7-8B75-4322-A312-25419C15D9D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaniTrader.MongoDb", "src\NaniTrader.MongoDb\NaniTrader.MongoDb.csproj", "{F32DC931-F154-4B41-AD2A-470C771E9074}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.MongoDb", "src\NaniTrader.MongoDb\NaniTrader.MongoDb.csproj", "{F32DC931-F154-4B41-AD2A-470C771E9074}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaniTrader.MongoDb.Tests", "test\NaniTrader.MongoDb.Tests\NaniTrader.MongoDb.Tests.csproj", "{B818174F-A4DD-4C61-BC19-A3FEB7650A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NaniTrader.MongoDb.Tests", "test\NaniTrader.MongoDb.Tests\NaniTrader.MongoDb.Tests.csproj", "{B818174F-A4DD-4C61-BC19-A3FEB7650A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

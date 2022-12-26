@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.CsvMappers
 {
     public sealed class FyersSymbolCsvMapper : ClassMap<FyersSymbolCsvMap>
     {

@@ -11,7 +11,7 @@ namespace NaniTrader.MongoDB
         {
             context.Services.AddMongoDbContext<NaniTraderMongoDbContext>(options =>
             {
-                options.AddDefaultRepositories();
+                options.AddDefaultRepositories(includeAllEntities: true);
             });
 
             Configure<AbpUnitOfWorkDefaultOptions>(options =>

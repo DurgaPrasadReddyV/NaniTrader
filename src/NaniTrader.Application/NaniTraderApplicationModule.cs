@@ -12,6 +12,7 @@ using Volo.Abp.BackgroundJobs.Hangfire;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Hangfire.SqlServer;
+using NaniTrader.SocketClients;
 
 namespace NaniTrader;
 [DependsOn(
@@ -44,6 +45,8 @@ public class NaniTraderApplicationModule : AbpModule
         {
             client.BaseAddress = new Uri("https://public.fyers.in/");
         });
+
+        context.Services.AddSingleton<FyersDataSocketClient>();
 
         context.Services.AddHangfire(config =>
         {

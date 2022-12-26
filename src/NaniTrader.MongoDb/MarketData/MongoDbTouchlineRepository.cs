@@ -12,9 +12,9 @@ using NaniTrader.MarketData.Interfaces;
 
 namespace NaniTrader.MarketData
 {
-    public class MongoDbMarketDataRepository : MongoDbRepository<NaniTraderMongoDbContext, Touchline, Guid>, IMarketDataRepository
+    public class MongoDbTouchlineRepository : MongoDbRepository<NaniTraderMongoDbContext, Touchline, Guid>, ITouchlineRepository
     {
-        public MongoDbMarketDataRepository(IMongoDbContextProvider<NaniTraderMongoDbContext> dbContextProvider)
+        public MongoDbTouchlineRepository(IMongoDbContextProvider<NaniTraderMongoDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

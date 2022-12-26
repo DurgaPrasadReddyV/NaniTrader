@@ -8,5 +8,6 @@ namespace NaniTrader.Exchanges.Interfaces
 {
     public interface IMarketDataFeed
     {
+
     }
 }

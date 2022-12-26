@@ -2,6 +2,8 @@
 using NaniTrader.ApiClients;
 using NaniTrader.Brokers.Fyers;
 using NaniTrader.Brokers.Fyers.Interfaces;
+using NaniTrader.Exchanges.Interfaces;
+using NaniTrader.Exchanges.Securities;
 using NaniTrader.Permissions;
 using NaniTrader.Settings;
 using System;
@@ -15,132 +17,52 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Settings;
 
-namespace NaniTrader.Fyers
+namespace NaniTrader.Exchanges
 {
-    [Authorize(NaniTraderPermissions.FyersCredentials.Default)]
-    public class ExchangeAppService : NaniTraderAppService, IFyersCredentialsAppService
+    [Authorize(NaniTraderPermissions.Exchanges.Default)]
+    public class ExchangeAppService : NaniTraderAppService, IExchangeAppService
     {
-        private readonly IFyersCredentialsRepository _fyersCredentialsRepository;
-        private readonly FyersCredentialsManager _fyersCredentialsManager;
-        private readonly FyersApiClient _fyersApiClient;
+        private readonly IExchangeRepository _exchangeRepository;
+        private readonly ExchangeManager _exchangeManager;
 
-        public ExchangeAppService(
-            IFyersCredentialsRepository fyersCredentialsRepository,
-            FyersCredentialsManager fyersCredentialsManager,
-            FyersApiClient fyersApiClient,
-            ISettingProvider settingProvider)
+        public ExchangeAppService(IExchangeRepository exchangeRepository, ExchangeManager exchangeManager)
         {
-            _fyersCredentialsRepository = fyersCredentialsRepository;
-            _fyersCredentialsManager = fyersCredentialsManager;
-            _fyersApiClient = fyersApiClient;
+            _exchangeRepository = exchangeRepository;
+            _exchangeManager = exchangeManager;
         }
 
-        public async Task<FyersCredentialsDto> GetAsync(Guid id)
+        public async Task<ExchangeDto> GetByExchangeIdentifierAsync(string exchangeIdentifier)
         {
-            var fyersCredentials = await _fyersCredentialsRepository.GetAsync(id);
-            return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCredentials);
+            var exchange = await _exchangeRepository.FindByExchangeIdAsync(Enum.Parse<ExchangeIdentifier>(exchangeIdentifier, true));
+
+            return ObjectMapper.Map<Exchange, ExchangeDto>(exchange);
         }
 
-        public async Task<FyersCredentialsDto> GetCurrentUserAsync()
+        public async Task<ExchangeDto> ConfigureAsync(ConfigureExchangeDto input)
         {
-            var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
-            return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCurrentUserCredentials);
+            var exchangeIdentifier = Enum.Parse<ExchangeIdentifier>(input.ExchangeIdentifier, true);
+            var existingExchange = await _exchangeRepository.FindByExchangeIdAsync(exchangeIdentifier);
+
+            if (existingExchange is not null)
+                throw new InvalidOperationException("Exchange is already configured.");
+
+            var securitiesProvider = Enum.Parse<SecuritiesProvider>(input.SecuritiesProvider, true);
+
+            Exchange exchange = _exchangeManager.Configure(exchangeIdentifier, securitiesProvider, input.Description);
+
+            await _exchangeRepository.InsertAsync(exchange);
+
+            return ObjectMapper.Map<Exchange, ExchangeDto>(exchange);
         }
 
-        public async Task<PagedResultDto<FyersCredentialsDto>> GetListAsync(GetFyersCredentialsListDto input)
+        public async Task ReconfigureAsync(ReconfigureExchangeDto input)
         {
-            if (input.Sorting.IsNullOrWhiteSpace())
-            {
-                input.Sorting = nameof(FyersCredentials.AppId);
-            }
-
-            var fyersCredentials = await _fyersCredentialsRepository.GetListAsync(
-                input.SkipCount,
-                input.MaxResultCount,
-                input.Sorting,
-                input.Filter
-            );
-
-            var totalCount = input.Filter == null
-                ? await _fyersCredentialsRepository.CountAsync()
-                : await _fyersCredentialsRepository.CountAsync(
-                    fyersCredentials => fyersCredentials.AppId.Contains(input.Filter));
-
-            return new PagedResultDto<FyersCredentialsDto>(
-                totalCount,
-                ObjectMapper.Map<List<FyersCredentials>, List<FyersCredentialsDto>>(fyersCredentials)
-            );
+            await Task.CompletedTask;
         }
 
-        public async Task<FyersCredentialsDto> CreateAsync(CreateFyersCredentialsDto input)
+        public async Task RemoveAsync(Guid id)
         {
-            var fyersCurrentUserCredentials = await _fyersCredentialsRepository.FindAsync(x => x.UserId == CurrentUser.Id.Value);
-            
-            if (fyersCurrentUserCredentials is not null)
-                throw new InvalidOperationException("Account already exists.");
-
-            var fyersCredentials = await _fyersCredentialsManager.CreateAsync(
-                input.AppId,
-                input.SecretId,
-                await SettingProvider.GetOrNullAsync(NaniTraderSettings.Brokers.Fyers.RedirectUri),
-                CurrentUser.Id.Value
-            );
-
-            await _fyersCredentialsRepository.InsertAsync(fyersCredentials);
-
-            return ObjectMapper.Map<FyersCredentials, FyersCredentialsDto>(fyersCredentials);
-        }
-
-        public async Task UpdateAsync(Guid id, UpdateFyersCredentialsDto input)
-        {
-            var fyersCredentials = await _fyersCredentialsRepository.GetAsync(id);
-            _fyersCredentialsManager.UpdateSecretIdAsync(fyersCredentials, input.SecretId);
-            await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
-        }
-
-        public async Task GenerateTokenAsync(string fyersApp, string authCode) //variable named fyersApp instead of appId to avoid id based endpoint
-        {
-            var fyersCredentials = await _fyersCredentialsRepository.FindByAppIdAsync(fyersApp);
-
-            StringBuilder sb = new StringBuilder();
-            using (SHA256 hash = SHA256.Create())
-            {
-                byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes($"{fyersCredentials.AppId}:{fyersCredentials.SecretId}"));
-
-                foreach (var item in result)
-                {
-                    sb.Append(item.ToString("x2"));
-                }
-            }
-
-            var check = sb.ToString();
-
-            var tokenPayload = new FyersAPI.TokenPayload()
-            {
-                appIdHash = check,
-                code = authCode,
-                grant_type = "authorization_code"
-            };
-
-            var response = await _fyersApiClient.GenerateTokenAsync(tokenPayload);
-
-            _fyersCredentialsManager.UpdateTokenAsync(fyersCredentials, response.access_token, GetTokenExpirationTime(response.access_token));
-
-            await _fyersCredentialsRepository.UpdateAsync(fyersCredentials);
-        }
-
-        public async Task DeleteAsync(Guid id)
-        {
-            await _fyersCredentialsRepository.DeleteAsync(id);
-        }
-
-        private DateTime GetTokenExpirationTime(string token)
-        {
-            var handler = new JwtSecurityTokenHandler();
-            var jwtSecurityToken = handler.ReadJwtToken(token);
-            var tokenExp = jwtSecurityToken.Claims.First(claim => claim.Type.Equals("exp")).Value;
-            var ticks = long.Parse(tokenExp);
-            return DateTimeOffset.FromUnixTimeSeconds(ticks).UtcDateTime;
+            await Task.CompletedTask;
         }
     }
 }

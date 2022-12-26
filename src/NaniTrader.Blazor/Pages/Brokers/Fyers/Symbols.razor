@@ -12,14 +12,8 @@
                 <h2>@L["Symbols"]</h2>
             </Column>
             <Column ColumnSize="ColumnSize.Is6">
-                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => LoadNewSymbolsAsync()">
-                    @L["LoadNewSymbols"]
-                </Button>
-                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => UpdateExistingSymbolsAsync()">
-                    @L["UpdateExistingSymbols"]
-                </Button>
-                <Button Color="Color.Primary" Disabled="@IsTaskRunning" Clicked="() => RemoveExpiredSymbolsAsync()">
-                    @L["RemoveExpiredSymbols"]
+                <Button Color="Color.Primary" Clicked="() => SynchronizeSymbolsAsync()">
+                    @L["SynchronizeSymbolsAsync"]
                 </Button>
             </Column>
         </Row>
